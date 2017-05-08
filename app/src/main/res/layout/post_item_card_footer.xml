@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_footer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".5"
+        android:gravity="center"
+        >
+        <TextView
+            android:id="@+id/ups"
+            android:drawableStart="@drawable/ic_thumb_up_black_18dp"
+            android:drawableLeft="@drawable/ic_thumb_up_black_18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="333"
+            android:gravity="center_vertical"
+            android:drawablePadding="6dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".5"
+        android:gravity="center"
+        >
+        <TextView
+            android:id="@+id/total_comments"
+            android:drawableStart="@drawable/ic_comment_black_18dp"
+            android:drawableLeft="@drawable/ic_comment_black_18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="666"
+            android:gravity="center_vertical"
+            android:drawablePadding="6dp"
+            />
+    </LinearLayout>
+</LinearLayout>
+
