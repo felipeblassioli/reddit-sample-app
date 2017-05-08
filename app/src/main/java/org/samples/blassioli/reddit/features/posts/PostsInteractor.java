@@ -6,12 +6,15 @@ import org.samples.blassioli.reddit.executor.ThreadExecutor;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 
 public class PostsInteractor extends BaseRxInteractor<List<Post>, Void> {
 
     private final PostsDataStore dataStore;
 
+    @Inject
     public PostsInteractor(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, PostsDataStore dataStore) {
         super(threadExecutor, postExecutionThread);
         this.dataStore = dataStore;

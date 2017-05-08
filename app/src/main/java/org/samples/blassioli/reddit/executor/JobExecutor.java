@@ -7,11 +7,13 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-//@Singleton
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 public class JobExecutor implements ThreadExecutor {
     private final ThreadPoolExecutor threadPoolExecutor;
 
-    //@Inject
+    @Inject
     JobExecutor() {
         this.threadPoolExecutor = new ThreadPoolExecutor(3, 5, 10, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(), new JobThreadFactory());

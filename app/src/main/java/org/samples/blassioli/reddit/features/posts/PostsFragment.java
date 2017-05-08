@@ -1,66 +1,80 @@
 package org.samples.blassioli.reddit.features.posts;
 
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import org.samples.blassioli.reddit.AndroidApplication;
 import org.samples.blassioli.reddit.R;
-import org.samples.blassioli.reddit.features.details.DetailsActivity;
+import org.samples.blassioli.reddit.widgets.RecyclerLceFragment;
+import org.samples.blassioli.reddit.widgets.RecyclerViewListAdapter;
 
-import com.google.android.gms.plus.PlusOneButton;
+import java.util.List;
 
-/**
- * A fragment with a Google +1 button.
- */
-public class PostsFragment extends Fragment {
+public class PostsFragment extends RecyclerLceFragment<List<Post>, PostsView, PostsPresenter, PostsAdapter.ViewHolder> {
 
-    // The request code must be 0 or greater.
-    private static final int PLUS_ONE_REQUEST_CODE = 0;
-    // The URL to +1.  Must be a valid URL.
-    private final String PLUS_ONE_URL = "http://developer.android.com";
-    //private PlusOneButton mPlusOneButton;
-    private Button button;
+    private PostsComponent postsComponent;
 
     public PostsFragment() {
-        // Required empty public constructor
     }
 
+    public static PostsFragment newInstance() {
+        return new PostsFragment();
+    }
+
+    @Override
+    public void onAttach(Activity a) {
+        super.onAttach(a);
+    }
+
+    @Override
+    public void onCreate(Bundle b) {
+        super.onCreate(b);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_posts, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        injectDependencies();
+        return inflater.inflate(R.layout.fragment_posts, container, false);
+    }
 
-        //Find the +1 button
-        //mPlusOneButton = (PlusOneButton) view.findViewById(R.id.plus_one_button);
-        button = (Button) view.findViewById(R.id.bt_teste);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent_info = new Intent(getActivity(), DetailsActivity.class);
-                startActivity(intent_info);
-                getActivity().overridePendingTransition(R.anim.slide_up, R.anim.no_change);
-            }
-        });
-        return view;
+    @Override public void onViewCreated(View view, Bundle savedInstance) {
+        super.onViewCreated(view, savedInstance);
+        loadData(false);
+    }
+
+    protected void injectDependencies() {
+
+        postsComponent = DaggerPostsComponent.builder()
+                .applicationComponent(((AndroidApplication)getActivity().getApplication()).getApplicationComponent())
+                .build();
+        postsComponent.inject(this);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        // Refresh the state of the +1 button each time the activity receives focus.
-        //mPlusOneButton.initialize(PLUS_ONE_URL, PLUS_ONE_REQUEST_CODE);
+    public PostsPresenter createPresenter() {
+        return postsComponent.presenter();
     }
 
+    @Override
+    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
+        return e.getMessage();
+    }
 
-    public static PostsFragment newInstance() {
-        return new PostsFragment();
+    @Override
+    protected RecyclerViewListAdapter<List<Post>, PostsAdapter.ViewHolder> createAdapter() {
+        return new PostsAdapter(getContext());
+    }
+
+    @Override
+    public void loadData(boolean pullToRefresh) {
+        presenter.loadData(pullToRefresh);
     }
 }

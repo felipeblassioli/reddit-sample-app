@@ -11,6 +11,9 @@ import org.samples.blassioli.reddit.api.RedditPostsDataResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
@@ -27,15 +30,21 @@ public class PostsRemoteDataStore implements PostsDataStore {
                public Post apply(RedditListingChildrenResponse c) {
                    RedditPostsDataResponse data = c.data;
                    return new Post(
+                           data.id,
                            data.author,
                            data.title,
                            data.num_comments,
                            data.created,
+                           data.created_utc,
                            data.thumbnail,
-                           data.url);
+                           data.url,
+                           data.permalink,
+                           data.selftext,
+                           data.ups);
                }
            };
 
+    @Inject
     public PostsRemoteDataStore(RedditApi api) {
         this.api = api;
     }

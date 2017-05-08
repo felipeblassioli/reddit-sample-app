@@ -2,13 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostsFragment"
-    android:background="@color/colorAccent">
+    tools:context=".PostsFragment">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NEXT"
-        android:id="@+id/bt_teste"/>
-
+    <include layout="@layout/merge_posts" />
 </FrameLayout>
