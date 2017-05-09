@@ -10,8 +10,6 @@ import org.samples.blassioli.reddit.api.RedditListingResponse;
 import org.samples.blassioli.reddit.api.RedditPostsDataResponse;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -25,24 +23,24 @@ public class PostsRemoteDataStore implements PostsDataStore {
     private final RedditApi api;
 
     private com.google.common.base.Function<RedditListingChildrenResponse, Post> toPost =
-           new com.google.common.base.Function<RedditListingChildrenResponse, Post>() {
-               @Override
-               public Post apply(RedditListingChildrenResponse c) {
-                   RedditPostsDataResponse data = c.data;
-                   return new Post(
-                           data.id,
-                           data.author,
-                           data.title,
-                           data.num_comments,
-                           data.created,
-                           data.created_utc,
-                           data.thumbnail,
-                           data.url,
-                           data.permalink,
-                           data.selftext,
-                           data.ups);
-               }
-           };
+            new com.google.common.base.Function<RedditListingChildrenResponse, Post>() {
+                @Override
+                public Post apply(RedditListingChildrenResponse c) {
+                    RedditPostsDataResponse data = c.data;
+                    return new Post(
+                            data.id,
+                            data.author,
+                            data.title,
+                            data.num_comments,
+                            data.created,
+                            data.created_utc,
+                            data.thumbnail,
+                            data.url,
+                            data.permalink,
+                            data.selftext,
+                            data.ups);
+                }
+            };
 
     @Inject
     public PostsRemoteDataStore(RedditApi api) {
@@ -50,15 +48,19 @@ public class PostsRemoteDataStore implements PostsDataStore {
     }
 
     @Override
-    public Observable<List<Post>> getPostsList(String subreddit, String label, String from, String limit) {
-        return api.getSubRedditPosts(subreddit, label, from, limit)
-                .map(new Function<RedditListingResponse, List<Post>>() {
+    public Observable<PostListModel> getPostsList(String subreddit, String label, String after, String limit) {
+        return api.getSubRedditPosts(subreddit, label, after, limit)
+                .map(new Function<RedditListingResponse, PostListModel>() {
                     @Override
-                    public List<Post> apply(@NonNull RedditListingResponse response) throws Exception {
+                    public PostListModel apply(@NonNull RedditListingResponse response) throws Exception {
                         return Optional.fromNullable(response.data)
-                                .transform(data -> data.children)
-                                .transform(children -> Lists.transform(children, toPost))
-                                .or(new ArrayList<>());
+                                .transform(data -> {
+                                     return new PostListModel(
+                                            new ArrayList<>(Lists.transform(data.children, toPost)),
+                                            data.after,
+                                            limit);
+                                })
+                                .or(PostListModel.getEmpty());
                     }
                 })
                 .toObservable();

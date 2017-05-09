@@ -10,21 +10,28 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby3.mvp.lce.MvpLceFragment;
-import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView;
 
+import org.samples.blassioli.reddit.BaseMvpLceView;
+import org.samples.blassioli.reddit.PaginatedModel;
 import org.samples.blassioli.reddit.R;
 
-import java.util.List;
 
-
-public abstract class RecyclerLceFragment<M extends List, V extends MvpLceView<M>, P extends MvpPresenter<V>, VH extends RecyclerView.ViewHolder>
-        extends MvpLceFragment<RecyclerView, M, V, P> {
+public abstract class RecyclerLceFragment<
+        M extends PaginatedModel<RecyclerViewListItemType>,
+        V extends BaseMvpLceView<M>,
+        P extends MvpPresenter<V>,
+        RecyclerViewListItemType>
+        extends SwipeRefreshLceFragment<M, V, P> {
     protected View emptyView;
     protected RecyclerView recyclerView;
-    protected RecyclerViewListAdapter<M, VH> adapter;
+    protected RecyclerViewListAdapter<RecyclerViewListItemType> adapter;
+    private M lastReceivedModel;
+    private EndlessRecyclerViewScrollListener scrollListener;
+    private boolean loadingMoreData = false;
 
-    protected abstract RecyclerViewListAdapter<M, VH> createAdapter();
+    protected abstract RecyclerViewListAdapter<RecyclerViewListItemType> createAdapter();
+
+    private LinearLayoutManager layoutManager;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -32,13 +39,56 @@ public abstract class RecyclerLceFragment<M extends List, V extends MvpLceView<M
         emptyView = view.findViewById(R.id.emptyView);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         adapter = createAdapter();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        layoutManager = new LinearLayoutManager(getActivity());
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                callLoadMore();
+            }
+        };
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addOnScrollListener(scrollListener);
         recyclerView.setAdapter(adapter);
     }
 
+    protected abstract void loadMoreData(String after);
+
+    private void callLoadMore() {
+        String after = "";
+        if(lastReceivedModel != null) {
+            after = lastReceivedModel.after;
+        }
+
+        // addLoaderRow
+        if(adapter.peekLast() != null) {
+            adapter.add(null);
+            adapter.notifyItemInserted(adapter.getItemCount() - 1);
+        }
+        loadingMoreData = true;
+        loadMoreData(after);
+    }
+
     @Override
-    public void setData(M data) {
-        adapter.addAll(data);
+    public void setData(M model) {
+        lastReceivedModel = model;
+        adapter.getItems().clear();
+        adapter.setItems(model.getData());
+        adapter.notifyDataSetChanged();
+        scrollListener.resetState();
+    }
+
+    @Override
+    public void extendData(M model) {
+        loadingMoreData = false;
+        lastReceivedModel = model;
+
+        // removeLoaderRow
+        if(adapter.getItemCount() > 0 && adapter.peekLast() == null) {
+            adapter.removeLast();
+            adapter.notifyItemRemoved(adapter.getItemCount());
+        }
+
+        adapter.addAll(model.getData());
         adapter.notifyDataSetChanged();
     }
 
@@ -49,7 +99,7 @@ public abstract class RecyclerLceFragment<M extends List, V extends MvpLceView<M
             //if (isRestoringViewState()) {
             //    emptyView.setVisibility(View.VISIBLE);
             //} else {
-                ObjectAnimator anim = ObjectAnimator.ofFloat(emptyView, "alpha", 0f, 1f).setDuration(300);
+                ObjectAnimator anim = ObjectAnimator.ofFloat(emptyView, "alpha", 0f, 1f).setDuration(400);
                 anim.setStartDelay(250);
                 anim.addListener(new AnimatorListenerAdapter() {
 
@@ -68,6 +118,9 @@ public abstract class RecyclerLceFragment<M extends List, V extends MvpLceView<M
 
     @Override
     public void showLoading(boolean pullToRefresh) {
+        if(loadingMoreData) {
+            return;
+        }
         super.showLoading(pullToRefresh);
         if (!pullToRefresh) {
             emptyView.setVisibility(View.GONE);

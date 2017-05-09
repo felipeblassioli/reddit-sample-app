@@ -20,7 +20,7 @@ public class BaseRxLcePresenterTest {
     private TestLcePresenterClass presenter;
 
     @Mock
-    MvpLceView<Object> mockView;
+    BaseMvpLceView<Object> mockView;
 
     @Mock
     BaseRxInteractor<Object, Void> mockInteractor;
@@ -54,7 +54,7 @@ public class BaseRxLcePresenterTest {
         assertThat(presenter.observer, is(nullValue()));
     }
 
-    private static final class TestLcePresenterClass extends BaseRxLcePresenter<MvpLceView<Object>, Object, BaseRxInteractor<Object, Void>, Void> {
+    private static final class TestLcePresenterClass extends BaseRxLcePresenter<BaseMvpLceView<Object>, Object, BaseRxInteractor<Object, Void>, Void> {
 
     }
 }

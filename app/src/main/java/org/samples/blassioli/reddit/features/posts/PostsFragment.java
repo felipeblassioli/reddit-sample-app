@@ -16,9 +16,13 @@ import org.samples.blassioli.reddit.widgets.RecyclerViewListAdapter;
 
 import java.util.List;
 
-public class PostsFragment extends RecyclerLceFragment<List<Post>, PostsView, PostsPresenter, PostsAdapter.ViewHolder> {
+public class PostsFragment extends RecyclerLceFragment<PostListModel, PostsView, PostsPresenter,
+        Post>
+        implements PostsView {
 
     private PostsComponent postsComponent;
+
+    private final String loadSize = "5";
 
     public PostsFragment() {
     }
@@ -51,7 +55,6 @@ public class PostsFragment extends RecyclerLceFragment<List<Post>, PostsView, Po
     }
 
     protected void injectDependencies() {
-
         postsComponent = DaggerPostsComponent.builder()
                 .applicationComponent(((AndroidApplication)getActivity().getApplication()).getApplicationComponent())
                 .build();
@@ -69,12 +72,17 @@ public class PostsFragment extends RecyclerLceFragment<List<Post>, PostsView, Po
     }
 
     @Override
-    protected RecyclerViewListAdapter<List<Post>, PostsAdapter.ViewHolder> createAdapter() {
+    protected RecyclerViewListAdapter<Post> createAdapter() {
         return new PostsAdapter(getContext());
     }
 
     @Override
     public void loadData(boolean pullToRefresh) {
-        presenter.loadData(pullToRefresh);
+        presenter.loadData(pullToRefresh, "", loadSize);
+    }
+
+    @Override
+    protected void loadMoreData(String after) {
+        presenter.loadData(false, after, loadSize);
     }
 }

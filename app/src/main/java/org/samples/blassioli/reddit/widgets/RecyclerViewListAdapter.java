@@ -1,33 +1,49 @@
 package org.samples.blassioli.reddit.widgets;
 
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-
 import java.util.List;
 
-public abstract class RecyclerViewListAdapter<T extends List, VH extends RecyclerView.ViewHolder>
-        extends RecyclerView.Adapter<VH> {
-    protected T items;
+public abstract class RecyclerViewListAdapter<T> extends RecyclerLoaderAdapter<T> {
 
-    public RecyclerViewListAdapter(T items) {
+    private List<T> items;
+
+    public RecyclerViewListAdapter(List<T> items) {
         super();
         this.items = items;
     }
 
-    @Override public int getItemCount() {
-        return items == null ? 0 : items.size();
+    @Override
+    public int getItemCount() {
+        return this.items == null ? 0 : this.items.size();
     }
 
-    public T getItems() {
-        return items;
+    public List<T> getItems() {
+        return this.items;
     }
 
-    public void setItems(T items) {
+    public void setItems(List<T>  items) {
         this.items = items;
     }
 
-    public void addAll(T items) {
+    public void add(T item) {
+        this.items.add(item);
+    }
+
+    public void addAll(List<T> items) {
         this.items.addAll(items);
+    }
+
+    public T getItem(int position) {
+        return this.items.get(position);
+    }
+
+    public void removeLast() {
+        if(getItemCount() > 0) {
+            this.items.remove(getItemCount() - 1);
+        }
+    }
+
+    public T peekLast() {
+       return getItemCount() > 0? this.items.get(getItemCount() - 1) : null;
     }
 
 }

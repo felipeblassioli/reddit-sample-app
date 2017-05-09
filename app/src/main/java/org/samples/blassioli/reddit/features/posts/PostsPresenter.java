@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class PostsPresenter extends BaseRxLcePresenter<PostsView, List<Post>, PostsInteractor, Void> {
+public class PostsPresenter extends BaseRxLcePresenter<PostsView, PostListModel, PostsInteractor, PostsInteractor.Params> {
     private final PostsInteractor interactor;
 
     @Inject
@@ -15,7 +15,8 @@ public class PostsPresenter extends BaseRxLcePresenter<PostsView, List<Post>, Po
         this.interactor = interactor;
     }
 
-    public void loadData(boolean pullToRefresh) {
-        super.loadData(pullToRefresh, interactor, null);
+    public void loadData(boolean pullToRefresh, String after, String limit) {
+        PostsInteractor.Params params = new PostsInteractor.Params("Android", "new", after, limit);
+        super.loadData(pullToRefresh, interactor, params);
     }
 }

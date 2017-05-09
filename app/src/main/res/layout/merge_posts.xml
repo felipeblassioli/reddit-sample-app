@@ -5,6 +5,7 @@
     >
 
     <include layout="@layout/view_loading"/>
+
     <include layout="@layout/view_error"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -39,5 +40,4 @@
         />
     <!--android:drawableTop="@drawable/ic_all_done"-->
     <!--android:textColor="@color/secondary_text"-->
-    <!--android:text="@string/empty_emails"-->
 </merge>

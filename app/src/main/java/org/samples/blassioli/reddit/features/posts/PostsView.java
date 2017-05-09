@@ -1,8 +1,6 @@
 package org.samples.blassioli.reddit.features.posts;
 
-import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView;
+import org.samples.blassioli.reddit.BaseMvpLceView;
 
-import java.util.List;
-
-public interface PostsView extends MvpLceView<List<Post>> {
+public interface PostsView extends BaseMvpLceView<PostListModel> {
 }

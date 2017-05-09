@@ -58,7 +58,7 @@ public class PostsInteractorTest {
         when(mockPostsDataStore.getPostsList(any(), any(), any(), any()))
                 .thenReturn(Observable.error(new Exception("Observable error")));
 
-        Observable<List<Post>> result = interactor.buildObservable(null);
+        Observable<PostListModel> result = interactor.buildObservable(new PostsInteractor.Params(any(), any(), any(), any()));
 
         verify(mockPostsDataStore).getPostsList(any(), any(), any(), any());
         verifyNoMoreInteractions(mockPostsDataStore);

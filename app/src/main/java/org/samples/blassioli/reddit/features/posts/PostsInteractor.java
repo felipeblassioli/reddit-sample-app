@@ -4,13 +4,11 @@ import org.samples.blassioli.reddit.BaseRxInteractor;
 import org.samples.blassioli.reddit.executor.PostExecutionThread;
 import org.samples.blassioli.reddit.executor.ThreadExecutor;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
-public class PostsInteractor extends BaseRxInteractor<List<Post>, Void> {
+public class PostsInteractor extends BaseRxInteractor<PostListModel, PostsInteractor.Params> {
 
     private final PostsDataStore dataStore;
 
@@ -20,8 +18,22 @@ public class PostsInteractor extends BaseRxInteractor<List<Post>, Void> {
         this.dataStore = dataStore;
     }
 
-    protected Observable<List<Post>> buildObservable(Void unused) {
-        return dataStore.getPostsList("Android", "new", "", "10");
+    protected Observable<PostListModel> buildObservable(Params params) {
+        return dataStore.getPostsList(params.subreddit, params.label, params.after, params.limit);
+    }
+
+    public static class Params {
+        public final String subreddit;
+        public final String label;
+        public final String after;
+        public final String limit;
+
+        public Params(String subreddit, String label, String after, String limit) {
+            this.subreddit = subreddit;
+            this.label = label;
+            this.after = after;
+            this.limit = limit;
+        }
     }
 
 }

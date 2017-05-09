@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PostsAdapter extends RecyclerViewListAdapter<List<Post>, PostsAdapter.ViewHolder> {
+public class PostsAdapter extends RecyclerViewListAdapter<Post> {
     private final Context context;
 
     public PostsAdapter(Context context) {
@@ -52,8 +52,7 @@ public class PostsAdapter extends RecyclerViewListAdapter<List<Post>, PostsAdapt
     }
 
     @Override
-    public PostsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public RecyclerView.ViewHolder getDataViewHolder(ViewGroup parent) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.post_item_card, parent, false);
         ViewHolder vh = new ViewHolder(v);
@@ -61,7 +60,9 @@ public class PostsAdapter extends RecyclerViewListAdapter<List<Post>, PostsAdapt
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    protected void onBindDataViewHolder(RecyclerView.ViewHolder rawHolder, int position) {
+        ViewHolder holder = (ViewHolder) rawHolder;
+
         Post p = getItems().get(position);
         holder.title.setText(p.title);
         String formattedAuthor = String.format("u/%s \u2022 ", p.author);

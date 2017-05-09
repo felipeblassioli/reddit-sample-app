@@ -3,11 +3,12 @@ package org.samples.blassioli.reddit;
 import android.support.annotation.UiThread;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
-import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView;
+
+import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
-public abstract class BaseRxLcePresenter<V extends MvpLceView<M>, M, I extends BaseRxInteractor<M, Params>, Params> extends MvpBasePresenter<V> {
+public abstract class BaseRxLcePresenter<V extends BaseMvpLceView<M>, M, I extends BaseRxInteractor<M, Params>, Params> extends MvpBasePresenter<V> {
 
     protected DisposableObserver<M> observer;
 
@@ -69,7 +70,11 @@ public abstract class BaseRxLcePresenter<V extends MvpLceView<M>, M, I extends B
             super.onNext(data);
 
             if (isViewAttached()) {
-                getView().setData(data);
+                if(pullToRefresh) {
+                    getView().setData(data);
+                } else {
+                    getView().extendData(data);
+                }
             }
         }
     }
