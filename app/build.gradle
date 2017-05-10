@@ -17,8 +17,8 @@ android {
         applicationId "org.samples.blassioli.reddit"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode System.getenv("VERSION_CODE") ?: 1
+        versionName System.getenv("VERSION_NAME") ?: "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
