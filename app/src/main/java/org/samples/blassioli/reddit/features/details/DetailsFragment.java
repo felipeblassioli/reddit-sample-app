@@ -2,54 +2,88 @@ package org.samples.blassioli.reddit.features.details;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.samples.blassioli.reddit.AndroidApplication;
 import org.samples.blassioli.reddit.R;
+import org.samples.blassioli.reddit.features.details.model.DetailsAdapter;
+import org.samples.blassioli.reddit.features.details.model.DetailsItem;
+import org.samples.blassioli.reddit.features.details.model.DetailsModel;
+import org.samples.blassioli.reddit.widgets.EndlessRecyclerViewScrollListener;
+import org.samples.blassioli.reddit.widgets.RecyclerLceFragment;
+import org.samples.blassioli.reddit.widgets.RecyclerViewListAdapter;
 
-import com.google.android.gms.plus.PlusOneButton;
+public class DetailsFragment extends RecyclerLceFragment<DetailsModel, DetailsView, DetailsPresenter,
+        DetailsItem> implements DetailsView {
 
-/**
- * A fragment with a Google +1 button.
- */
-public class DetailsFragment extends Fragment {
+    private static final String P_SUBREDDIT_ID = "parameterSubredditId";
 
-    // The request code must be 0 or greater.
-    private static final int PLUS_ONE_REQUEST_CODE = 0;
-    // The URL to +1.  Must be a valid URL.
-    private final String PLUS_ONE_URL = "http://developer.android.com";
-    private PlusOneButton mPlusOneButton;
+    private DetailsComponent detailsComponent;
 
+    private String subredditId;
 
     public DetailsFragment() {
-        // Required empty public constructor
     }
 
+    public static DetailsFragment newInstance(String subredditId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(P_SUBREDDIT_ID, subredditId);
+        DetailsFragment f = new DetailsFragment();
+        f.setArguments(bundle);
+        return f;
+    }
+
+    public void injectDependencies() {
+        detailsComponent = DaggerDetailsComponent.builder()
+                .applicationComponent(((AndroidApplication)getActivity().getApplication()).getApplicationComponent())
+                .build();
+        detailsComponent.inject(this);
+    }
+
+    @Override
+    public DetailsPresenter createPresenter() {
+        return detailsComponent.presenter();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_details, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        injectDependencies();
+        subredditId = getArguments().getString(P_SUBREDDIT_ID);
+        return inflater.inflate(R.layout.fragment_details, container, false);
+    }
 
-        //Find the +1 button
-        mPlusOneButton = (PlusOneButton) view.findViewById(R.id.plus_one_button);
-
-        return view;
+    @Override
+    public void onViewCreated(View view, Bundle savedInstance) {
+        super.onViewCreated(view, savedInstance);
+        loadData(false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        // Refresh the state of the +1 button each time the activity receives focus.
-        mPlusOneButton.initialize(PLUS_ONE_URL, PLUS_ONE_REQUEST_CODE);
     }
 
+    @Override
+    public void loadData(boolean pullToRefresh) {
+        presenter.loadData(pullToRefresh, subredditId);
+    }
 
-    public static DetailsFragment newInstance() {
-        return new DetailsFragment();
+    @Override
+    protected void loadMoreData(String after) {
+
+    }
+
+    @Override
+    protected RecyclerViewListAdapter<DetailsItem> createAdapter() {
+        return new DetailsAdapter();
+    }
+
+    @Override
+    protected EndlessRecyclerViewScrollListener getScrollListener() {
+        return null;
     }
 }
