@@ -1,4 +1,5 @@
-# reddit-sample-app [![CircleCI](https://circleci.com/gh/felipeblassioli/reddit-sample-app.svg?style=svg)](https://circleci.com/gh/felipeblassioli/reddit-sample-app) [![CircleCI](https://circleci.com/gh/felipeblassioli/reddit-sample-app.svg?style=svg)](https://circleci.com/gh/felipeblassioli/reddit-sample-app)
+# Reddit Sample App [![CircleCI](https://circleci.com/gh/felipeblassioli/reddit-sample-app.svg?style=svg)](https://circleci.com/gh/felipeblassioli/reddit-sample-app) [![codecov](https://codecov.io/gh/felipeblassioli/reddit-sample-app/branch/master/graph/badge.svg)](https://codecov.io/gh/felipeblassioli/reddit-sample-app)
+
 Sample MVP using the Mosby library.
 
 ## Continuos Integration
