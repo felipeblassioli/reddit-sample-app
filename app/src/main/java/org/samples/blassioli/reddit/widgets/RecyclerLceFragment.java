@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,18 +41,24 @@ public abstract class RecyclerLceFragment<
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         adapter = createAdapter();
         layoutManager = new LinearLayoutManager(getActivity());
-        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+        recyclerView.setLayoutManager(layoutManager);
+        scrollListener = getScrollListener();
+        if(scrollListener != null) {
+            recyclerView.addOnScrollListener(scrollListener);
+        }
+        recyclerView.setAdapter(adapter);
+    }
+
+    protected abstract void loadMoreData(String after);
+
+    protected EndlessRecyclerViewScrollListener getScrollListener() {
+        return new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 callLoadMore();
             }
         };
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addOnScrollListener(scrollListener);
-        recyclerView.setAdapter(adapter);
     }
-
-    protected abstract void loadMoreData(String after);
 
     private void callLoadMore() {
         String after = "";
@@ -59,11 +66,8 @@ public abstract class RecyclerLceFragment<
             after = lastReceivedModel.after;
         }
 
-        // addLoaderRow
-        if(adapter.peekLast() != null) {
-            adapter.add(null);
-            adapter.notifyItemInserted(adapter.getItemCount() - 1);
-        }
+        addLoaderRow();
+
         loadingMoreData = true;
         loadMoreData(after);
     }
@@ -77,42 +81,62 @@ public abstract class RecyclerLceFragment<
         scrollListener.resetState();
     }
 
+    private void removeLoaderRow() {
+
+    }
+
+    private void addLoaderRow() {
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+                if(adapter.peekLast() != null) {
+                    adapter.add(null);
+                    adapter.notifyItemInserted(adapter.getItemCount() - 1);
+                }
+            }
+        };
+        handler.post(r);
+    }
+
     @Override
     public void extendData(M model) {
         loadingMoreData = false;
         lastReceivedModel = model;
-
-        // removeLoaderRow
-        if(adapter.getItemCount() > 0 && adapter.peekLast() == null) {
-            adapter.removeLast();
-            adapter.notifyItemRemoved(adapter.getItemCount());
-        }
-
-        adapter.addAll(model.getData());
-        adapter.notifyDataSetChanged();
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+                // removeLoaderRow
+                if(adapter.getItemCount() > 0 && adapter.peekLast() == null) {
+                    adapter.removeLast();
+                    adapter.notifyItemRemoved(adapter.getItemCount());
+                }
+                adapter.addAll(model.getData());
+                adapter.notifyDataSetChanged();
+            }
+        };
+        handler.post(r);
     }
 
     @Override
     public void showContent() {
-
-        if (adapter.getItemCount() == 0) {
-            //if (isRestoringViewState()) {
-            //    emptyView.setVisibility(View.VISIBLE);
-            //} else {
-                ObjectAnimator anim = ObjectAnimator.ofFloat(emptyView, "alpha", 0f, 1f).setDuration(400);
-                anim.setStartDelay(250);
-                anim.addListener(new AnimatorListenerAdapter() {
-
-                    @Override public void onAnimationStart(Animator animation) {
-                        emptyView.setVisibility(View.VISIBLE);
-                    }
-                });
-                anim.start();
-            //}
-        } else {
-            emptyView.setVisibility(View.GONE);
-        }
-
+        Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+                if (adapter.getItemCount() == 0) {
+                    ObjectAnimator anim = ObjectAnimator.ofFloat(emptyView, "alpha", 0f, 1f).setDuration(400);
+                    anim.setStartDelay(250);
+                    anim.addListener(new AnimatorListenerAdapter() {
+                        @Override public void onAnimationStart(Animator animation) {
+                            emptyView.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    anim.start();
+                } else {
+                    emptyView.setVisibility(View.GONE);
+                }
+            }
+        };
+        handler.post(r);
         super.showContent();
     }
 
@@ -134,4 +158,11 @@ public abstract class RecyclerLceFragment<
             emptyView.setVisibility(View.GONE);
         }
     }
+
+    @Override
+    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
+        e.printStackTrace();
+        return "An error ocurred! Tap to retry.";
+    }
+
 }

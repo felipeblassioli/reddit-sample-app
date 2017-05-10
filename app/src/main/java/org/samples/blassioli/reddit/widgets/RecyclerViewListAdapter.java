@@ -2,6 +2,8 @@ package org.samples.blassioli.reddit.widgets;
 
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public abstract class RecyclerViewListAdapter<T> extends RecyclerLoaderAdapter<T> {
 
     private List<T> items;
@@ -29,6 +31,7 @@ public abstract class RecyclerViewListAdapter<T> extends RecyclerLoaderAdapter<T
     }
 
     public void addAll(List<T> items) {
+        checkNotNull(items);
         this.items.addAll(items);
     }
 
