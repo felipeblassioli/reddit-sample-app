@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.samples.blassioli.reddit.api.RedditApi;
-import org.samples.blassioli.reddit.api.RedditListingResponse;
+import org.samples.blassioli.reddit.api.posts.RedditApi;
+import org.samples.blassioli.reddit.api.posts.RedditListingResponse;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;

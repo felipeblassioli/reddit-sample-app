@@ -1,4 +1,4 @@
-package org.samples.blassioli.reddit.api;
+package org.samples.blassioli.reddit.api.posts;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;

@@ -3,11 +3,10 @@ package org.samples.blassioli.reddit.features.posts;
 
 import org.samples.blassioli.reddit.BaseRxLcePresenter;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
-public class PostsPresenter extends BaseRxLcePresenter<PostsView, PostListModel, PostsInteractor, PostsInteractor.Params> {
+public class PostsPresenter
+        extends BaseRxLcePresenter<PostsView, PostListModel, PostsInteractor, PostsInteractor.Params> {
     private final PostsInteractor interactor;
 
     @Inject

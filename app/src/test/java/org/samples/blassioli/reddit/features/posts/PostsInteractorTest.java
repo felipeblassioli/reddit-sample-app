@@ -1,15 +1,11 @@
 package org.samples.blassioli.reddit.features.posts;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.samples.blassioli.reddit.executor.PostExecutionThread;
 import org.samples.blassioli.reddit.executor.ThreadExecutor;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -20,19 +16,15 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class PostsInteractorTest {
-    private PostsInteractor interactor;
-
     @Mock
     ThreadExecutor mockThreadExecutor;
-
     @Mock
     PostExecutionThread mockPostExecutionThread;
-
     @Mock
     PostsDataStore mockPostsDataStore;
-
-    @Rule
-    public ExpectedException expectedEx = ExpectedException.none();
+    @Mock
+    PostListModel mockPostsModel;
+    private PostsInteractor interactor;
 
     @Before
     public void setUp() {
@@ -40,21 +32,29 @@ public class PostsInteractorTest {
         interactor = new PostsInteractor(mockThreadExecutor, mockPostExecutionThread, mockPostsDataStore);
     }
 
+    private PostsInteractor.Params getParams() {
+        return new PostsInteractor.Params("Android", "new", "", "");
+    }
+
     @Test
     public void testGetPostsListsObservableHappyCase() {
-        interactor.buildObservable(null);
+        when(mockPostsDataStore.getPostsList(any(), any(), any(), any()))
+                .thenReturn(Observable.just(mockPostsModel));
+
+        Observable<PostListModel> result = interactor.buildObservable(getParams());
 
         verify(mockPostsDataStore).getPostsList(any(), any(), any(), any());
         verifyNoMoreInteractions(mockPostsDataStore);
         verifyZeroInteractions(mockThreadExecutor);
         verifyZeroInteractions(mockPostExecutionThread);
+
+        result.test()
+                .assertNoErrors()
+                .assertValue(mockPostsModel);
     }
 
     @Test
     public void testGetPostsListsObservableSadCase() {
-        expectedEx.expect(RuntimeException.class);
-        expectedEx.expectMessage("Observable error");
-
         when(mockPostsDataStore.getPostsList(any(), any(), any(), any()))
                 .thenReturn(Observable.error(new Exception("Observable error")));
 
@@ -65,7 +65,7 @@ public class PostsInteractorTest {
         verifyZeroInteractions(mockThreadExecutor);
         verifyZeroInteractions(mockPostExecutionThread);
 
-        result.blockingFirst();
+        result.test().assertError(e -> e.getMessage().equals("Observable error"));
     }
 
 }

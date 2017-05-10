@@ -4,17 +4,19 @@ import android.support.annotation.UiThread;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
-import java.util.List;
-
 import io.reactivex.observers.DisposableObserver;
 
 public abstract class BaseRxLcePresenter<V extends BaseMvpLceView<M>, M, I extends BaseRxInteractor<M, Params>, Params> extends MvpBasePresenter<V> {
 
     protected DisposableObserver<M> observer;
 
+    @Override
+    public void attachView(V v) {
+        super.attachView(v);
+    }
+
     public void loadData(boolean pullToRefresh, I interactor, Params params) {
         unsubscribeIfNeeded();
-
         if (isViewAttached()) {
             getView().showLoading(pullToRefresh);
         }
@@ -31,7 +33,7 @@ public abstract class BaseRxLcePresenter<V extends BaseMvpLceView<M>, M, I exten
     }
 
     private void unsubscribeIfNeeded() {
-        if(observer != null && !observer.isDisposed()) {
+        if (observer != null && !observer.isDisposed()) {
             observer.dispose();
         }
         observer = null;
@@ -50,7 +52,7 @@ public abstract class BaseRxLcePresenter<V extends BaseMvpLceView<M>, M, I exten
             super.onComplete();
 
             if (isViewAttached()) {
-               getView().showContent();
+                getView().showContent();
             }
             unsubscribeIfNeeded();
         }
@@ -70,7 +72,7 @@ public abstract class BaseRxLcePresenter<V extends BaseMvpLceView<M>, M, I exten
             super.onNext(data);
 
             if (isViewAttached()) {
-                if(pullToRefresh) {
+                if (pullToRefresh) {
                     getView().setData(data);
                 } else {
                     getView().extendData(data);

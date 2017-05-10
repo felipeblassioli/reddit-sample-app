@@ -23,4 +23,5 @@ public class PostsModule {
     PostsPresenter providesPostsPresenter(PostsInteractor interactor) {
         return new PostsPresenter(interactor);
     }
+
 }

@@ -11,8 +11,8 @@ public class PostListModel extends PaginatedModel<Post> {
     public final List<Post> data;
 
     public PostListModel(@NonNull List<Post> data, String after, String limit) {
+        super(after);
         this.data = data;
-        this.after = after;
         this.limit = limit;
     }
 

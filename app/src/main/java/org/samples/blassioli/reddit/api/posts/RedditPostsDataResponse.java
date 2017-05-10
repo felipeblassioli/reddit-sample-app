@@ -1,4 +1,4 @@
-package org.samples.blassioli.reddit.api;
+package org.samples.blassioli.reddit.api.posts;
 
 public class RedditPostsDataResponse {
     public String id;

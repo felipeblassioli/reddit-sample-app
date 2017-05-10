@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.samples.blassioli.reddit.api.RedditApi;
-import org.samples.blassioli.reddit.api.RedditListingResponse;
+import org.samples.blassioli.reddit.api.posts.RedditApi;
+import org.samples.blassioli.reddit.api.posts.RedditListingResponse;
 
 import io.reactivex.Single;
 
@@ -14,8 +14,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PostsRemoteDataStoreTest {
-    private static final int FAKE_USER_ID = 765;
-
     private PostsRemoteDataStore postsDataStore;
 
     @Mock

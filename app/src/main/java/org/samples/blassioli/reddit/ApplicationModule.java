@@ -2,15 +2,13 @@ package org.samples.blassioli.reddit;
 
 import android.content.Context;
 
-import org.samples.blassioli.reddit.api.RedditApi;
+import org.samples.blassioli.reddit.api.posts.RedditApi;
 import org.samples.blassioli.reddit.executor.JobExecutor;
 import org.samples.blassioli.reddit.executor.PostExecutionThread;
 import org.samples.blassioli.reddit.executor.ThreadExecutor;
 import org.samples.blassioli.reddit.executor.UIThread;
 import org.samples.blassioli.reddit.features.posts.PostsDataStore;
 import org.samples.blassioli.reddit.features.posts.PostsRemoteDataStore;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;

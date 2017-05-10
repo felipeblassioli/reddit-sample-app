@@ -1,6 +1,9 @@
 package org.samples.blassioli.reddit.features.posts;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,8 +17,10 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import org.samples.blassioli.reddit.R;
+import org.samples.blassioli.reddit.features.details.DetailsActivity;
 import org.samples.blassioli.reddit.picasso.RoundedTransformation;
 import org.samples.blassioli.reddit.widgets.RecyclerViewListAdapter;
+import org.samples.blassioli.reddit.widgets.RedditHeadline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,31 +29,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PostsAdapter extends RecyclerViewListAdapter<Post> {
-    private final Context context;
+    private final Activity activity;
 
-    public PostsAdapter(Context context) {
-        this(context, new ArrayList<>());
+    public PostsAdapter(Activity activity) {
+        this(activity, new ArrayList<>());
     }
 
-    public PostsAdapter(Context context, List<Post> items) {
+    public PostsAdapter(Activity activity, List<Post> items) {
         super(items);
-        this.context = context;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.content_layout) public ViewGroup contentGroup;
-        @BindView(R.id.author_text) public TextView author;
-        @BindView(R.id.created_text) public TextView created;
-        @BindView(R.id.title_text) public TextView title;
-        @BindView(R.id.img_thumbnail) public ImageView thumbnail;
-        @BindView(R.id.body_text) public TextView body;
-        @BindView(R.id.ups) public TextView ups;
-        @BindView(R.id.total_comments) public TextView totalComments;
-
-        public ViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
+        this.activity = activity;
     }
 
     @Override
@@ -62,38 +51,29 @@ public class PostsAdapter extends RecyclerViewListAdapter<Post> {
     @Override
     protected void onBindDataViewHolder(RecyclerView.ViewHolder rawHolder, int position) {
         ViewHolder holder = (ViewHolder) rawHolder;
-
         Post p = getItems().get(position);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, DetailsActivity.class);
+                Bundle b = new Bundle();
+                b.putString(DetailsActivity.P_LINK_ID, p.id);
+                intent.putExtras(b);
+                activity.startActivity(intent);
+                activity.overridePendingTransition(R.anim.slide_up, R.anim.no_change);
+            }
+        });
+
         holder.title.setText(p.title);
-        String formattedAuthor = String.format("u/%s \u2022 ", p.author);
-        holder.author.setText(formattedAuthor);
+        holder.headline.setAuthor(p.author);
+        holder.headline.setCreatedUtc(p.createdUtc);
 
-        //1494198768 - 05/07/2017 @ 11:12pm (UTC)
-        double now = System.currentTimeMillis() / 1000.0;
-        Long ts = p.createdUtc;
-        int diff = (int)(now - ts);
-        String qualifier = "m";
-        diff /= 60;
-        if(diff >= 60) {
-            qualifier = "h";
-            diff /= 60;
-        }
-        if(diff >= 24) {
-            qualifier = "d";
-            diff /= 24;
-        }
-        if(diff >= 24) {
-            qualifier = "w";
-            diff /= 24;
-        }
-        String formattedCreated = String.format("%d%s", diff, qualifier);
-        holder.created.setText(formattedCreated);
-
-        if(p.thumbnail != null &&
+        if (p.thumbnail != null &&
                 !TextUtils.isEmpty(p.thumbnail) &&
                 URLUtil.isValidUrl(p.thumbnail)) {
             holder.thumbnail.setVisibility(View.VISIBLE);
-            Picasso.with(context)
+            Picasso.with(activity)
                     .load(p.thumbnail)
                     .fit()
                     .centerCrop()
@@ -115,6 +95,37 @@ public class PostsAdapter extends RecyclerViewListAdapter<Post> {
         holder.body.setText(p.selftext);
         holder.ups.setText(p.ups);
         holder.totalComments.setText(p.numComments);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.content_layout)
+        public ViewGroup contentGroup;
+
+        @BindView(R.id.headline)
+        public RedditHeadline headline;
+
+        @BindView(R.id.title_text)
+        public TextView title;
+
+        @BindView(R.id.img_thumbnail)
+        public ImageView thumbnail;
+
+        @BindView(R.id.body_text)
+        public TextView body;
+
+        @BindView(R.id.ups)
+        public TextView ups;
+
+        @BindView(R.id.total_comments)
+        public TextView totalComments;
+
+        @BindView(R.id.card_view)
+        public CardView cardView;
+
+        public ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
     }
 
 }

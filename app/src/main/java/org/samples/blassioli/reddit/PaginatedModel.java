@@ -7,5 +7,9 @@ public abstract class PaginatedModel<T> {
 
     public String after;
 
+    public PaginatedModel(String after) {
+        this.after = after;
+    }
+
     public abstract List<T> getData();
 }

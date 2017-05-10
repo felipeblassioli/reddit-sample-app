@@ -3,18 +3,14 @@ package org.samples.blassioli.reddit.features.posts;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import org.samples.blassioli.reddit.AndroidApplication;
 import org.samples.blassioli.reddit.R;
 import org.samples.blassioli.reddit.widgets.RecyclerLceFragment;
 import org.samples.blassioli.reddit.widgets.RecyclerViewListAdapter;
-
-import java.util.List;
 
 public class PostsFragment extends RecyclerLceFragment<PostListModel, PostsView, PostsPresenter,
         Post>
@@ -49,7 +45,8 @@ public class PostsFragment extends RecyclerLceFragment<PostListModel, PostsView,
         return inflater.inflate(R.layout.fragment_posts, container, false);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstance) {
+    @Override
+    public void onViewCreated(View view, Bundle savedInstance) {
         super.onViewCreated(view, savedInstance);
         loadData(false);
     }
@@ -67,13 +64,8 @@ public class PostsFragment extends RecyclerLceFragment<PostListModel, PostsView,
     }
 
     @Override
-    protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        return e.getMessage();
-    }
-
-    @Override
     protected RecyclerViewListAdapter<Post> createAdapter() {
-        return new PostsAdapter(getContext());
+        return new PostsAdapter(getActivity());
     }
 
     @Override

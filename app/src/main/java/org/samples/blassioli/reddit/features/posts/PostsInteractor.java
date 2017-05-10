@@ -4,6 +4,8 @@ import org.samples.blassioli.reddit.BaseRxInteractor;
 import org.samples.blassioli.reddit.executor.PostExecutionThread;
 import org.samples.blassioli.reddit.executor.ThreadExecutor;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
@@ -19,7 +21,8 @@ public class PostsInteractor extends BaseRxInteractor<PostListModel, PostsIntera
     }
 
     protected Observable<PostListModel> buildObservable(Params params) {
-        return dataStore.getPostsList(params.subreddit, params.label, params.after, params.limit);
+        return dataStore.getPostsList(params.subreddit, params.label, params.after, params.limit)
+                .timeout(5500, TimeUnit.MILLISECONDS);
     }
 
     public static class Params {

@@ -4,10 +4,10 @@ package org.samples.blassioli.reddit.features.posts;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
-import org.samples.blassioli.reddit.api.RedditApi;
-import org.samples.blassioli.reddit.api.RedditListingChildrenResponse;
-import org.samples.blassioli.reddit.api.RedditListingResponse;
-import org.samples.blassioli.reddit.api.RedditPostsDataResponse;
+import org.samples.blassioli.reddit.api.posts.RedditApi;
+import org.samples.blassioli.reddit.api.posts.RedditListingChildrenResponse;
+import org.samples.blassioli.reddit.api.posts.RedditListingResponse;
+import org.samples.blassioli.reddit.api.posts.RedditPostsDataResponse;
 
 import java.util.ArrayList;
 
@@ -55,7 +55,7 @@ public class PostsRemoteDataStore implements PostsDataStore {
                     public PostListModel apply(@NonNull RedditListingResponse response) throws Exception {
                         return Optional.fromNullable(response.data)
                                 .transform(data -> {
-                                     return new PostListModel(
+                                    return new PostListModel(
                                             new ArrayList<>(Lists.transform(data.children, toPost)),
                                             data.after,
                                             limit);
