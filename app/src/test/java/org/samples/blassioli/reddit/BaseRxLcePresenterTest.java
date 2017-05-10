@@ -1,7 +1,5 @@
 package org.samples.blassioli.reddit;
 
-import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -13,17 +11,16 @@ import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class BaseRxLcePresenterTest {
 
-    private TestLcePresenterClass presenter;
-
     @Mock
     BaseMvpLceView<Object> mockView;
-
+    
     @Mock
     BaseRxInteractor<Object, Void> mockInteractor;
+
+    private TestLcePresenterClass presenter;
 
     @Before
     public void setUp() {
