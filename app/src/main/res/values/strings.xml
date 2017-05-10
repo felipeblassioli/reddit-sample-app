@@ -95,7 +95,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Posts -->
-    <string name="posts.empty_message">No posts!</string>
+    <string name="default_empty_message">Wow, such empty!</string>
 
     <!--Details -->
 </resources>
