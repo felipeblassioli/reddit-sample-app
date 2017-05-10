@@ -3,21 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <include layout="@layout/default_progress_item"
         android:id="@+id/loadingView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Loading"
-        android:textSize="46sp" />
-
-    <!---->
-    <!--<fr.castorflex.android.circularprogressbar.CircularProgressBar-->
-        <!--android:id="@+id/loadingView"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:indeterminate="true"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--/>-->
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
 </merge>

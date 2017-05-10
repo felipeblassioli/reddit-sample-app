@@ -4,40 +4,14 @@
     android:layout_height="match_parent"
     >
 
-    <include layout="@layout/view_loading"/>
+    <include layout="@layout/view_loading" />
 
-    <include layout="@layout/view_error"/>
+    <include layout="@layout/view_error" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/contentView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+    <include layout="@layout/view_recycler_list" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="8dp"
-            android:clipToPadding="false"
-            />
-        <!--android:paddingTop="@dimen/mail_item_padding_top_bottom"-->
-        <!--android:paddingBottom="@dimen/mail_item_padding_top_bottom"-->
+    <include layout="@layout/default_empty_view" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-
-    <TextView
-        android:id="@+id/emptyView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="16dp"
-        android:drawablePadding="20dp"
-        android:textSize="16sp"
-        android:visibility="gone"
-        android:text="@string/posts.empty_message"
-        />
     <!--android:drawableTop="@drawable/ic_all_done"-->
     <!--android:textColor="@color/secondary_text"-->
 </merge>
