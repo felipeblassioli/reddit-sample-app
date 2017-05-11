@@ -4,98 +4,106 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.samples.blassioli.reddit.executor.PostExecutionThread;
-import org.samples.blassioli.reddit.executor.ThreadExecutor;
+import org.samples.blassioli.reddit.fake.TestInteractor;
 
-import io.reactivex.Observable;
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.TestScheduler;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 public class BaseRxInteractorTest {
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     private BaseRxInteractorTestClass interactor;
 
     private TestDisposableObserver<Object> testObserver;
 
-    @Mock
-    ThreadExecutor mockThreadExecutor;
-    @Mock
-    PostExecutionThread mockPostExecutionThread;
+    private TestScheduler testScheduler;
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    private TestObserver<Object> bla;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        interactor = new BaseRxInteractorTestClass(mockThreadExecutor, mockPostExecutionThread);
-        testObserver = new TestDisposableObserver<>();
-        when(mockPostExecutionThread.getScheduler()).thenReturn(new TestScheduler());
+        testScheduler = new TestScheduler();
+        interactor = spy(new BaseRxInteractorTestClass(testScheduler));
+        testObserver = spy(new TestDisposableObserver<>());
     }
 
     @Test
-    public void testBuildInteractorObservableReturnCorrectResult() {
-        interactor.execute(testObserver, Params.EMPTY);
-
-        assertThat(testObserver.valuesCount, equalTo(0));
+    public void testExecute_shouldCallBuildObservable_withSameParameters() {
+        TestInteractor.Params params = TestInteractor.Params.EMPTY;
+        interactor.execute(testObserver, params);
+        verify(interactor).buildObservable(params);
     }
 
     @Test
-    public void testSubscriptionWhenExecutingInteractor() {
-        interactor.execute(testObserver, Params.EMPTY);
+    public void testExecute_shouldSubscribeToBuiltObservable() {
+        interactor.execute(testObserver, TestInteractor.Params.EMPTY);
+        assertThat(testObserver.isSubscribed()).isTrue();
+    }
+
+    @Test
+    public void testDispose_shouldDisposeOfUnfinishedObservable() {
+        TestInteractor.Params params = new TestInteractor.Params(3, TimeUnit.SECONDS);
+        interactor.execute(testObserver, params);
+        interactor.scheduler.advanceTimeBy(2, TimeUnit.SECONDS);
+
+        assertThat(testObserver.isDisposed()).isFalse();
         interactor.dispose();
-
-        assertThat(testObserver.isDisposed(), is(true));
+        assertThat(testObserver.isDisposed()).isTrue();
     }
 
     @Test
-    public void testShouldFailWhenExecuteWithNullObserver() {
+    public void testExecute_shouldFailWhenCalledWithNullObserver() {
         expectedException.expect(NullPointerException.class);
-        interactor.execute(null, Params.EMPTY);
+        interactor.execute(null, TestInteractor.Params.EMPTY);
     }
 
-    private static class BaseRxInteractorTestClass extends BaseRxInteractor<Object, Params> {
-
-        BaseRxInteractorTestClass(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-            super(threadExecutor, postExecutionThread);
-        }
-
-        @Override
-        protected Observable<Object> buildObservable(Params params) {
-            return Observable.empty();
-        }
-
-        @Override
-        public void execute(DisposableObserver<Object> observer, Params params) {
-            super.execute(observer, params);
+    private static class BaseRxInteractorTestClass extends TestInteractor {
+        public BaseRxInteractorTestClass(TestScheduler scheduler) {
+            super(scheduler);
         }
     }
 
     private static class TestDisposableObserver<T> extends DisposableObserver<T> {
         private int valuesCount = 0;
 
-        @Override 
+        private boolean subscribed = false;
+
+        @Override
         public void onNext(T value) {
             valuesCount++;
         }
 
-        @Override 
+        @Override
         public void onError(Throwable e) {
         }
 
-        @Override 
+        @Override
         public void onComplete() {
+        }
+
+        protected void onStart() {
+            subscribed = true;
+        }
+
+        public boolean isSubscribed() {
+            return this.subscribed && !isDisposed();
         }
     }
 
     private static class Params {
         private static Params EMPTY = new Params();
-        private Params() {}
+
+        private Params() {
+        }
     }
 }

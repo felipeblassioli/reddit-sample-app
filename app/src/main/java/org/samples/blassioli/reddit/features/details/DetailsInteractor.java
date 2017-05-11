@@ -12,14 +12,15 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 
 public class DetailsInteractor extends BaseRxInteractor<DetailsModel, DetailsInteractor.Params> {
 
     private final DetailsDataStore dataStore;
 
     @Inject
-    public DetailsInteractor(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, DetailsDataStore dataStore) {
-        super(threadExecutor, postExecutionThread);
+    public DetailsInteractor(Scheduler subscribeOnScheduler, Scheduler observeOnScheduler, DetailsDataStore dataStore) {
+        super(subscribeOnScheduler, observeOnScheduler);
         this.dataStore = dataStore;
     }
 

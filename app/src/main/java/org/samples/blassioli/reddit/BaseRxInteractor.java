@@ -6,6 +6,7 @@ import org.samples.blassioli.reddit.executor.PostExecutionThread;
 import org.samples.blassioli.reddit.executor.ThreadExecutor;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -21,13 +22,13 @@ import io.reactivex.schedulers.Schedulers;
  */
 public abstract class BaseRxInteractor<T, Params> {
 
-    private final ThreadExecutor threadExecutor;
-    private final PostExecutionThread postExecutionThread;
     private final CompositeDisposable disposables;
+    private final Scheduler subscribeOnScheduler;
+    private final Scheduler observeOnScheduler;
 
-    public BaseRxInteractor(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-        this.threadExecutor = threadExecutor;
-        this.postExecutionThread = postExecutionThread;
+    public BaseRxInteractor(Scheduler subscribeOnScheduler, Scheduler observeOnScheduler) {
+        this.subscribeOnScheduler = subscribeOnScheduler;
+        this.observeOnScheduler = observeOnScheduler;
         this.disposables = new CompositeDisposable();
     }
 
@@ -46,8 +47,8 @@ public abstract class BaseRxInteractor<T, Params> {
     public void execute(DisposableObserver<T> observer, Params params) {
         Preconditions.checkNotNull(observer);
         final Observable<T> observable = this.buildObservable(params)
-                .subscribeOn(Schedulers.from(threadExecutor))
-                .observeOn(postExecutionThread.getScheduler());
+                .subscribeOn(subscribeOnScheduler)
+                .observeOn(observeOnScheduler);
 
         addDisposable(observable.subscribeWith(observer));
     }

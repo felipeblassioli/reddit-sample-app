@@ -28,7 +28,7 @@ public class PostsPresenterTest {
     }
 
     @Test
-    public void testExecuteInteractorWithCorrectParameters() {
+    public void testLoadData_shouldExecuteInteractorWithSameParameters() {
         boolean pullToRefresh = false;
         String after = RandomData.randomString(36);
         String limit = String.valueOf(RandomData.randomInt(1, 100));

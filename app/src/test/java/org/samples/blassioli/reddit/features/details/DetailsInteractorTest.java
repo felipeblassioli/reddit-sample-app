@@ -1,19 +1,18 @@
 package org.samples.blassioli.reddit.features.details;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.samples.blassioli.reddit.executor.PostExecutionThread;
-import org.samples.blassioli.reddit.executor.ThreadExecutor;
 import org.samples.blassioli.reddit.features.details.data.DetailsDataStore;
 import org.samples.blassioli.reddit.features.details.model.DetailsModel;
+import org.samples.blassioli.reddit.utils.RandomData;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -22,10 +21,10 @@ import static org.mockito.Mockito.when;
 public class DetailsInteractorTest {
 
     @Mock
-    ThreadExecutor mockThreadExecutor;
+    Scheduler mockSubscribeOnScheduler;
 
     @Mock
-    PostExecutionThread mockPostExecutionThread;
+    Scheduler mockObserveOnScheduler;
 
     @Mock
     DetailsDataStore mockDetailsDataStore;
@@ -38,42 +37,39 @@ public class DetailsInteractorTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        interactor = new DetailsInteractor(mockThreadExecutor, mockPostExecutionThread, mockDetailsDataStore);
+        interactor = new DetailsInteractor(mockSubscribeOnScheduler, mockObserveOnScheduler, mockDetailsDataStore);
     }
 
-    private DetailsInteractor.Params getParams() {
-        return new DetailsInteractor.Params("Android", "linkId");
+    private DetailsInteractor.Params getRandomParams() {
+        return new DetailsInteractor.Params("Android", RandomData.randomString(64));
     }
 
     @Test
-    public void testGetDetailsHappyCase() {
-        when(mockDetailsDataStore.getDetails(any(), any()))
-                .thenReturn(Observable.just(mockDetailsModel));
-
-        Observable<DetailsModel> result = interactor.buildObservable(getParams());
-
+    public void testBuildObservable_shouldCallDataStoreAtMostOnce() {
+        interactor.buildObservable(getRandomParams());
         verify(mockDetailsDataStore).getDetails(any(), any());
-        verifyNoMoreInteractions(mockDetailsDataStore);
-        verifyZeroInteractions(mockThreadExecutor);
-        verifyZeroInteractions(mockPostExecutionThread);
-
-        result.test().assertNoErrors()
-                .assertValue(mockDetailsModel);
     }
 
     @Test
-    public void testGetDetailsSadCase() {
+    public void testBuildObservable_shouldCallDataStore_getDetails_withSameParameters() {
+        DetailsInteractor.Params param = getRandomParams();
+        interactor.buildObservable(param);
+        verify(mockDetailsDataStore).getDetails(eq(param.subreddit), eq(param.id));
+    }
+
+    @Test
+    public void testBuildObservable_shouldNotInteractWithSchedulers_beforeExecuteCalled() {
+        interactor.buildObservable(getRandomParams());
+        verifyZeroInteractions(mockSubscribeOnScheduler);
+        verifyZeroInteractions(mockObserveOnScheduler);
+    }
+
+    @Test
+    public void testBuildObservable_shouldPropagateDataStoreErrors() {
         when(mockDetailsDataStore.getDetails(any(), any()))
                 .thenReturn(Observable.error(new Exception("Observable error")));
-
-        Observable<DetailsModel> result =
-                interactor.buildObservable(getParams());
-
-        verify(mockDetailsDataStore).getDetails(any(), any());
-        verifyNoMoreInteractions(mockDetailsDataStore);
-        verifyZeroInteractions(mockThreadExecutor);
-        verifyZeroInteractions(mockPostExecutionThread);
-
-        result.test().assertError(e -> e.getMessage().equals("Observable error"));
+        interactor.buildObservable(getRandomParams())
+                .test()
+                .assertError(e -> e.getMessage().equals("Observable error"));
     }
 }

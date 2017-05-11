@@ -8,7 +8,7 @@ import io.reactivex.observers.DisposableObserver;
 
 public abstract class BaseRxLcePresenter<V extends BaseMvpLceView<M>, M, I extends BaseRxInteractor<M, Params>, Params> extends MvpBasePresenter<V> {
 
-    protected DisposableObserver<M> observer;
+    protected DefaultObserver<M> observer;
 
     @Override
     public void attachView(V v) {
@@ -21,8 +21,12 @@ public abstract class BaseRxLcePresenter<V extends BaseMvpLceView<M>, M, I exten
             getView().showLoading(pullToRefresh);
         }
 
-        observer = new LceObserver(pullToRefresh);
+        observer = createObserver(pullToRefresh);
         interactor.execute(observer, params);
+    }
+
+    protected DefaultObserver<M> createObserver(boolean pullToRefresh) {
+        return new LceObserver(pullToRefresh);
     }
 
     @UiThread
@@ -39,7 +43,7 @@ public abstract class BaseRxLcePresenter<V extends BaseMvpLceView<M>, M, I exten
         observer = null;
     }
 
-    private final class LceObserver extends DefaultObserver<M> {
+    private class LceObserver extends DefaultObserver<M> {
         private final boolean pullToRefresh;
 
         LceObserver(boolean pullToRefresh) {

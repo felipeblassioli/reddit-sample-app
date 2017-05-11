@@ -29,7 +29,7 @@ public class DetailsPresenterTest {
     }
 
     @Test
-    public void testExecuteInteractorWithCorrectParameters() {
+    public void testLoadData_shouldExecuteInteractorWithSameParameters() {
         boolean pullToRefresh = false;
         String id = RandomData.randomString(36);
         presenter.loadData(pullToRefresh, id);

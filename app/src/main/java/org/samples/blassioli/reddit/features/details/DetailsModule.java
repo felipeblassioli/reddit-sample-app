@@ -11,6 +11,7 @@ import org.samples.blassioli.reddit.features.details.data.DetailsRemoteDataStore
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
@@ -42,7 +43,7 @@ public class DetailsModule {
     DetailsInteractor providesDetailsInteractor(ThreadExecutor threadExecutor,
                                                 PostExecutionThread postExecutionThread,
                                                 DetailsDataStore detailsDataStore) {
-        return new DetailsInteractor(threadExecutor, postExecutionThread, detailsDataStore);
+        return new DetailsInteractor(Schedulers.from(threadExecutor), postExecutionThread.getScheduler(), detailsDataStore);
     }
 
     @Provides

@@ -4,6 +4,11 @@ import com.squareup.moshi.FromJson;
 
 import java.util.List;
 
+/**
+ * Reddit response's is a root array with two elements.
+ * The first is of kind t3 (Link).
+ * The second is of kind t1(Comment)
+ */
 public class DetailsApiResponseConverter {
     @FromJson
     public DetailsApiResponse fromJson(List<DetailsData> dataContainer) {

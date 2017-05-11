@@ -1,6 +1,5 @@
 package org.samples.blassioli.reddit.features.details;
 
-import org.hamcrest.core.IsNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -12,21 +11,21 @@ import org.samples.blassioli.reddit.features.details.api.DetailsApiResponse;
 import org.samples.blassioli.reddit.features.details.api.DetailsData;
 import org.samples.blassioli.reddit.features.details.api.DetailsDataChildren;
 import org.samples.blassioli.reddit.features.details.data.DetailsRemoteDataStore;
+import org.samples.blassioli.reddit.features.details.model.DetailsModel;
 import org.samples.blassioli.reddit.utils.RandomData;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNull.notNullValue;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.samples.blassioli.reddit.utils.PredicateUtils.check;
 
 public class DetailsRemoteDataStoreTest {
     @Mock
@@ -41,10 +40,18 @@ public class DetailsRemoteDataStoreTest {
     }
 
     @Test
-    public void testGetDetails() {
+    public void testGetDetails_shouldCallApi_getDetails_withSameParameters() {
+        String sub = RandomData.randomString(256);
+        String linkId = RandomData.randomString(36);
+        detailsDataStore.getDetails(sub, linkId);
+        verify(mockDetailsApi).getDetails(eq(sub), eq(linkId), anyInt());
+    }
+
+    @Test
+    public void testGetDetails_shouldCreateDetailsModel_withSameSize_asApiResponseCommentsChildren() {
         // FakeResponse
         DetailsApiResponseBuilder builder = new DetailsApiResponseBuilder();
-        for(int i=0; i<100; i++) {
+        for (int i = 0; i < 100; i++) {
             builder.withChild(new DataChildrenItemBuilder()
                     .withId("comment#" + i)
                     .withKind("t1")
@@ -54,31 +61,33 @@ public class DetailsRemoteDataStoreTest {
 
         when(mockDetailsApi.getDetails(any(), any(), anyInt()))
                 .thenReturn(Single.just(fakeResponse));
-
-        String sub = "Android";
-        String linkId = "id";
-        detailsDataStore.getDetails(sub, linkId)
+        callGetDetailsWithRandomParameters()
                 .test()
                 .assertNoErrors()
-                .assertValue(detailsModel -> {
-                    assertThat(detailsModel.getData(), is(notNullValue()));
-                    assertThat(detailsModel.getData().size(), equalTo(fakeResponse.childWithT1.data.children.size()));
-                    return true;
-                });
-        verify(mockDetailsApi).getDetails(eq(sub), eq(linkId), anyInt());
+                .assertValue(check(
+                        detailsModel -> {
+                            assertThat(detailsModel).isNotNull();
+                            assertThat(detailsModel.getData()).isNotNull();
+                            assertThat(detailsModel.getData().size())
+                                    .isEqualTo(fakeResponse.childWithT1.data.children.size());
+                        }
+                ));
     }
 
     @Test
-    public void testGetDetailsError() {
+    public void testGetDetails_shouldPropagateApiErrors() {
         when(mockDetailsApi.getDetails(any(), any(), anyInt()))
                 .thenReturn(Single.error(new Exception("Single Error")));
 
-        String sub = "Android";
-        String linkId = "id";
-        detailsDataStore.getDetails(sub, linkId)
+        callGetDetailsWithRandomParameters()
                 .test()
                 .assertError(e -> e.getMessage().equals("Single Error"));
-        verify(mockDetailsApi).getDetails(eq(sub), eq(linkId), anyInt());
+    }
+
+    private Observable<DetailsModel> callGetDetailsWithRandomParameters() {
+        String sub = RandomData.randomString(256);
+        String linkId = RandomData.randomString(36);
+        return detailsDataStore.getDetails(sub, linkId);
     }
 
     private class DataChildrenItemBuilder {
@@ -132,7 +141,7 @@ public class DetailsRemoteDataStoreTest {
         }
 
         public DetailsApiResponseBuilder withChild(DataChildrenItem child) {
-            if("t1".equals(child.kind)) {
+            if ("t1".equals(child.kind)) {
                 current.childWithT1.data.children.add(child);
             } else {
                 current.childWithT3.data.children.add(child);

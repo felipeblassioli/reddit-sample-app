@@ -2,12 +2,10 @@ package org.samples.blassioli.reddit.features.posts;
 
 import org.samples.blassioli.reddit.executor.PostExecutionThread;
 import org.samples.blassioli.reddit.executor.ThreadExecutor;
-import org.samples.blassioli.reddit.features.posts.PostsDataStore;
-import org.samples.blassioli.reddit.features.posts.PostsInteractor;
-import org.samples.blassioli.reddit.features.posts.PostsPresenter;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.schedulers.Schedulers;
 
 @Module
 public class PostsModule {
@@ -16,7 +14,7 @@ public class PostsModule {
     PostsInteractor providesPostsInteractor(ThreadExecutor threadExecutor,
                                             PostExecutionThread postExecutionThread,
                                             PostsDataStore postsDataStore) {
-        return new PostsInteractor(threadExecutor, postExecutionThread, postsDataStore);
+        return new PostsInteractor(Schedulers.from(threadExecutor), postExecutionThread.getScheduler(), postsDataStore);
     }
 
     @Provides

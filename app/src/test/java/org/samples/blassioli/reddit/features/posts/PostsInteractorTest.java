@@ -4,22 +4,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.samples.blassioli.reddit.executor.PostExecutionThread;
-import org.samples.blassioli.reddit.executor.ThreadExecutor;
+import org.samples.blassioli.reddit.utils.RandomData;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class PostsInteractorTest {
     @Mock
-    ThreadExecutor mockThreadExecutor;
+    Scheduler mockSubscribeOnScheduler;
     @Mock
-    PostExecutionThread mockPostExecutionThread;
+    Scheduler mockObserveOnScheduler;
     @Mock
     PostsDataStore mockPostsDataStore;
     @Mock
@@ -29,43 +29,42 @@ public class PostsInteractorTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        interactor = new PostsInteractor(mockThreadExecutor, mockPostExecutionThread, mockPostsDataStore);
+        interactor = new PostsInteractor(mockSubscribeOnScheduler, mockObserveOnScheduler, mockPostsDataStore);
     }
 
-    private PostsInteractor.Params getParams() {
-        return new PostsInteractor.Params("Android", "new", "", "");
+    private PostsInteractor.Params getRandomParams() {
+        return new PostsInteractor.Params("Android",
+                "new",
+                RandomData.randomString(36),
+                String.valueOf(RandomData.randomInt(0, 50)));
     }
 
     @Test
-    public void testGetPostsListsObservableHappyCase() {
-        when(mockPostsDataStore.getPostsList(any(), any(), any(), any()))
-                .thenReturn(Observable.just(mockPostsModel));
-
-        Observable<PostListModel> result = interactor.buildObservable(getParams());
-
+    public void testBuildObservable_shouldCallDataStoreAtMostOnce() {
+        interactor.buildObservable(getRandomParams());
         verify(mockPostsDataStore).getPostsList(any(), any(), any(), any());
-        verifyNoMoreInteractions(mockPostsDataStore);
-        verifyZeroInteractions(mockThreadExecutor);
-        verifyZeroInteractions(mockPostExecutionThread);
-
-        result.test()
-                .assertNoErrors()
-                .assertValue(mockPostsModel);
     }
 
     @Test
-    public void testGetPostsListsObservableSadCase() {
+    public void testBuildObservable_shouldCallDataStore_getDetails_withSameParameters() {
+        PostsInteractor.Params param = getRandomParams();
+        interactor.buildObservable(param);
+        verify(mockPostsDataStore).getPostsList(eq(param.subreddit), eq(param.label), eq(param.after), eq(param.limit));
+    }
+
+    @Test
+    public void testBuildObservable_shouldNotInteractWithSchedulers_beforeExecuteCalled() {
+        interactor.buildObservable(getRandomParams());
+        verifyZeroInteractions(mockSubscribeOnScheduler);
+        verifyZeroInteractions(mockObserveOnScheduler);
+    }
+
+    @Test
+    public void testBuildObservable_shouldPropagateDataStoreErrors() {
         when(mockPostsDataStore.getPostsList(any(), any(), any(), any()))
                 .thenReturn(Observable.error(new Exception("Observable error")));
-
-        Observable<PostListModel> result = interactor.buildObservable(new PostsInteractor.Params(any(), any(), any(), any()));
-
-        verify(mockPostsDataStore).getPostsList(any(), any(), any(), any());
-        verifyNoMoreInteractions(mockPostsDataStore);
-        verifyZeroInteractions(mockThreadExecutor);
-        verifyZeroInteractions(mockPostExecutionThread);
-
-        result.test().assertError(e -> e.getMessage().equals("Observable error"));
+        interactor.buildObservable(getRandomParams())
+                .test()
+                .assertError(e -> e.getMessage().equals("Observable error"));
     }
-
 }
