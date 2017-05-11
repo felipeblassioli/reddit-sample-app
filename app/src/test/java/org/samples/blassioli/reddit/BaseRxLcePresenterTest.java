@@ -57,9 +57,6 @@ public class BaseRxLcePresenterTest {
         assertThat(presenter.observer).isNotNull();
     }
 
-    /**
-     * Should call in order view.showLoading, view.extendData, view.showContent()
-     */
     @Test
     public void testLoadData_shouldCallView_showLoading_extendData_showContent_sequentially() {
         boolean pullToRefresh = false;
@@ -72,6 +69,21 @@ public class BaseRxLcePresenterTest {
 
         testScheduler.advanceTimeTo(3, TimeUnit.SECONDS);
         verify(mockView).extendData(expectedObject);
+        verify(mockView).showContent();
+    }
+
+    @Test
+    public void testLoadData_shouldCallView_showLoading_setData_showContent_sequentially() {
+        boolean pullToRefresh = true;
+        Object expectedObject = new Object();
+
+        presenter.loadData(pullToRefresh, testInteractor, new TestInteractor.Params(3, TimeUnit.SECONDS, expectedObject));
+        verify(mockView, never()).extendData(expectedObject);
+        verify(mockView, never()).showContent();
+        verify(mockView).showLoading(pullToRefresh);
+
+        testScheduler.advanceTimeTo(3, TimeUnit.SECONDS);
+        verify(mockView).setData(expectedObject);
         verify(mockView).showContent();
     }
 
