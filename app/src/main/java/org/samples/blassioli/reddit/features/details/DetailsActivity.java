@@ -1,7 +1,10 @@
 package org.samples.blassioli.reddit.features.details;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
@@ -17,7 +20,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     public static final String FRAGMENT_TAG_DETAILS = "detailsFragmentTag";
 
-    public static final String P_LINK_ID = "t3LinkId";
+    protected static final String P_LINK_ID = "t3LinkId";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -36,14 +39,18 @@ public class DetailsActivity extends AppCompatActivity {
         currentLinkId = getIntent().getExtras().getString(P_LINK_ID);
         checkNotNull(currentLinkId);
 
+        initToolbar();
+        showDetails();
+    }
+
+    protected void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        showDetails();
     }
 
-    private void showDetails() {
+    protected void showDetails() {
         DetailsFragment fragment = DetailsFragment.newInstance(currentLinkId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.contentLayout, fragment, FRAGMENT_TAG_DETAILS)
@@ -62,4 +69,11 @@ public class DetailsActivity extends AppCompatActivity {
         return true;
     }
 
+    public static Intent createIntent(Context context, String linkId) {
+        Intent intent = new Intent(context, DetailsActivity.class);
+        Bundle b = new Bundle();
+        b.putString(DetailsActivity.P_LINK_ID, linkId);
+        intent.putExtras(b);
+        return intent;
+    }
 }

@@ -7,4 +7,5 @@ public class DetailsItem {
     public String ups;
     public Long created;
     public Long createdUtc;
+    public int depth;
 }
