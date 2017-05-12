@@ -9,16 +9,16 @@ import android.view.ViewGroup;
 import org.samples.blassioli.reddit.AndroidApplication;
 import org.samples.blassioli.reddit.R;
 import org.samples.blassioli.reddit.features.details.model.DetailsAdapter;
-import org.samples.blassioli.reddit.features.details.model.DetailsItem;
+import org.samples.blassioli.reddit.features.details.model.CommentModel;
 import org.samples.blassioli.reddit.features.details.model.DetailsModel;
 import org.samples.blassioli.reddit.widgets.EndlessRecyclerViewScrollListener;
 import org.samples.blassioli.reddit.widgets.RecyclerLceFragment;
 import org.samples.blassioli.reddit.widgets.RecyclerViewListAdapter;
 
 public class DetailsFragment extends RecyclerLceFragment<DetailsModel, DetailsView, DetailsPresenter,
-        DetailsItem> implements DetailsView {
+        CommentModel> implements DetailsView {
 
-    private static final String P_SUBREDDIT_ID = "parameterSubredditId";
+    protected static final String P_SUBREDDIT_ID = "parameterSubredditId";
 
     private DetailsComponent detailsComponent;
 
@@ -63,22 +63,12 @@ public class DetailsFragment extends RecyclerLceFragment<DetailsModel, DetailsVi
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void loadData(boolean pullToRefresh) {
         presenter.loadData(pullToRefresh, subredditId);
     }
 
     @Override
-    protected void loadMoreData(String after) {
-
-    }
-
-    @Override
-    protected RecyclerViewListAdapter<DetailsItem> createAdapter() {
+    protected RecyclerViewListAdapter<CommentModel> createAdapter() {
         return new DetailsAdapter();
     }
 
