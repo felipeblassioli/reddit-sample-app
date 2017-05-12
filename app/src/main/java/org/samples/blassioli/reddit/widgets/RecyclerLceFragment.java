@@ -29,10 +29,9 @@ public abstract class RecyclerLceFragment<
     private M lastReceivedModel;
     private EndlessRecyclerViewScrollListener scrollListener;
     private boolean loadingMoreData = false;
+    private LinearLayoutManager layoutManager;
 
     protected abstract RecyclerViewListAdapter<RecyclerViewListItemType> createAdapter();
-
-    private LinearLayoutManager layoutManager;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -43,7 +42,7 @@ public abstract class RecyclerLceFragment<
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         scrollListener = getScrollListener();
-        if(scrollListener != null) {
+        if (scrollListener != null) {
             recyclerView.addOnScrollListener(scrollListener);
         }
         recyclerView.setAdapter(adapter);
@@ -62,7 +61,7 @@ public abstract class RecyclerLceFragment<
 
     private void callLoadMore() {
         String after = "";
-        if(lastReceivedModel != null) {
+        if (lastReceivedModel != null) {
             after = lastReceivedModel.after;
         }
 
@@ -78,18 +77,16 @@ public abstract class RecyclerLceFragment<
         adapter.getItems().clear();
         adapter.setItems(model.getData());
         adapter.notifyDataSetChanged();
-        scrollListener.resetState();
-    }
-
-    private void removeLoaderRow() {
-
+        if(scrollListener != null) {
+            scrollListener.resetState();
+        }
     }
 
     private void addLoaderRow() {
         Handler handler = new Handler();
         final Runnable r = new Runnable() {
             public void run() {
-                if(adapter.peekLast() != null) {
+                if (adapter.peekLast() != null) {
                     adapter.add(null);
                     adapter.notifyItemInserted(adapter.getItemCount() - 1);
                 }
@@ -106,7 +103,7 @@ public abstract class RecyclerLceFragment<
         final Runnable r = new Runnable() {
             public void run() {
                 // removeLoaderRow
-                if(adapter.getItemCount() > 0 && adapter.peekLast() == null) {
+                if (adapter.getItemCount() > 0 && adapter.peekLast() == null) {
                     adapter.removeLast();
                     adapter.notifyItemRemoved(adapter.getItemCount());
                 }
@@ -126,7 +123,8 @@ public abstract class RecyclerLceFragment<
                     ObjectAnimator anim = ObjectAnimator.ofFloat(emptyView, "alpha", 0f, 1f).setDuration(400);
                     anim.setStartDelay(250);
                     anim.addListener(new AnimatorListenerAdapter() {
-                        @Override public void onAnimationStart(Animator animation) {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
                             emptyView.setVisibility(View.VISIBLE);
                         }
                     });
@@ -142,7 +140,7 @@ public abstract class RecyclerLceFragment<
 
     @Override
     public void showLoading(boolean pullToRefresh) {
-        if(loadingMoreData) {
+        if (loadingMoreData) {
             return;
         }
         super.showLoading(pullToRefresh);
