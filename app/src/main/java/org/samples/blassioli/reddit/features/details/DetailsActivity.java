@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
@@ -30,6 +29,14 @@ public class DetailsActivity extends AppCompatActivity {
     ViewGroup contentPanel;
 
     private String currentLinkId;
+
+    public static Intent createIntent(Context context, String linkId) {
+        Intent intent = new Intent(context, DetailsActivity.class);
+        Bundle b = new Bundle();
+        b.putString(DetailsActivity.P_LINK_ID, linkId);
+        intent.putExtras(b);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +74,5 @@ public class DetailsActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    public static Intent createIntent(Context context, String linkId) {
-        Intent intent = new Intent(context, DetailsActivity.class);
-        Bundle b = new Bundle();
-        b.putString(DetailsActivity.P_LINK_ID, linkId);
-        intent.putExtras(b);
-        return intent;
     }
 }
