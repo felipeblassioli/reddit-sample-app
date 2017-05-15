@@ -5,10 +5,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.samples.blassioli.reddit.api.posts.RedditApi;
-import org.samples.blassioli.reddit.api.posts.RedditListingChildrenResponse;
-import org.samples.blassioli.reddit.api.posts.RedditListingDataResponse;
-import org.samples.blassioli.reddit.api.posts.RedditListingResponse;
-import org.samples.blassioli.reddit.api.posts.RedditPostsDataResponse;
+import org.samples.blassioli.reddit.api.posts.Link;
+import org.samples.blassioli.reddit.api.posts.ListingData;
+import org.samples.blassioli.reddit.api.posts.ListingOfLinks;
+import org.samples.blassioli.reddit.api.posts.LinkData;
 import org.samples.blassioli.reddit.utils.RandomData;
 
 import java.util.ArrayList;
@@ -46,8 +46,8 @@ public class PostsRemoteDataStoreTest {
 
     @Test
     public void testGetPostsList_shouldCreateDetailsModel_withSameSize_asApiResponseCommentsChildren() {
-        RedditListingResponse fakeResponse = new RedditListingResponse();
-        fakeResponse.data = new RedditListingDataResponse();
+        ListingOfLinks fakeResponse = new ListingOfLinks();
+        fakeResponse.data = new ListingData();
         fakeResponse.data.children = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             fakeResponse.data.children.add(randomChildWithId("post" + i));
@@ -87,9 +87,9 @@ public class PostsRemoteDataStoreTest {
     }
 
 
-    private RedditListingChildrenResponse randomChildWithId(String id) {
-        RedditListingChildrenResponse response = new RedditListingChildrenResponse();
-        response.data = new RedditPostsDataResponse();
+    private Link randomChildWithId(String id) {
+        Link response = new Link();
+        response.data = new LinkData();
         response.data.id = id;
         response.data.author = RandomData.randomString(256);
         response.data.title = RandomData.randomString(256);

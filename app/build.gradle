@@ -98,6 +98,11 @@ dependencies {
     testCompile 'org.robolectric:shadows-support-v4:3.3.2'
 
     testCompile 'org.mockito:mockito-core:2.0.2-beta'
+    compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.6.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+
+    compile 'org.parceler:parceler-api:1.1.8'
+    annotationProcessor 'org.parceler:parceler:1.1.8'
 }
 
 jacoco {

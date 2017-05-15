@@ -16,8 +16,12 @@ public class AndroidApplication extends Application {
 
     private void initializeInjector() {
         this.applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(this))
+                .applicationModule(getApplicationModule())
                 .build();
+    }
+
+    public ApplicationModule getApplicationModule() {
+        return new ApplicationModule(this);
     }
 
     public ApplicationComponent getApplicationComponent() {

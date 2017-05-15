@@ -2,6 +2,9 @@ package org.samples.blassioli.reddit;
 
 import android.content.Context;
 
+import com.squareup.moshi.Moshi;
+
+import org.samples.blassioli.reddit.api.posts.PreviewDataConverter;
 import org.samples.blassioli.reddit.api.posts.RedditApi;
 import org.samples.blassioli.reddit.executor.JobExecutor;
 import org.samples.blassioli.reddit.executor.PostExecutionThread;
@@ -41,10 +44,13 @@ public class ApplicationModule {
 
     @Provides
     RedditApi providesRedditApi() {
+        Moshi moshi = new Moshi.Builder()
+                .add(new PreviewDataConverter())
+                .build();
         Retrofit retrofit =
                 new Retrofit.Builder()
                         .baseUrl("https://www.reddit.com")
-                        .addConverterFactory(MoshiConverterFactory.create())
+                        .addConverterFactory(MoshiConverterFactory.create(moshi))
                         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                         .build();
 

@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
 
+import org.parceler.Parcels;
 import org.samples.blassioli.reddit.R;
+import org.samples.blassioli.reddit.features.posts.Post;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +23,8 @@ public class DetailsActivity extends AppCompatActivity {
 
     protected static final String P_LINK_ID = "t3LinkId";
 
+    protected static final String P_LINK_DATA = "linkData";
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -30,10 +34,13 @@ public class DetailsActivity extends AppCompatActivity {
 
     private String currentLinkId;
 
-    public static Intent createIntent(Context context, String linkId) {
+    private Post post;
+
+    public static Intent createIntent(Context context, String linkId, Post post) {
         Intent intent = new Intent(context, DetailsActivity.class);
         Bundle b = new Bundle();
         b.putString(DetailsActivity.P_LINK_ID, linkId);
+        b.putParcelable(P_LINK_DATA, Parcels.wrap(post));
         intent.putExtras(b);
         return intent;
     }
@@ -43,8 +50,11 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
-        currentLinkId = getIntent().getExtras().getString(P_LINK_ID);
+
+        Bundle extras = getIntent().getExtras();
+        currentLinkId = extras.getString(P_LINK_ID);
         checkNotNull(currentLinkId);
+        post = Parcels.unwrap(extras.getParcelable(P_LINK_DATA));
 
         initToolbar();
         showDetails();
@@ -58,7 +68,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     protected void showDetails() {
-        DetailsFragment fragment = DetailsFragment.newInstance(currentLinkId);
+        DetailsFragment fragment = DetailsFragment.newInstance(currentLinkId, post);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.contentLayout, fragment, FRAGMENT_TAG_DETAILS)
                 .commit();

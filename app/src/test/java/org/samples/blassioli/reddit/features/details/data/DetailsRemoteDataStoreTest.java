@@ -1,16 +1,16 @@
-package org.samples.blassioli.reddit.features.details;
+package org.samples.blassioli.reddit.features.details.data;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.samples.blassioli.reddit.features.details.api.DataChildrenItem;
-import org.samples.blassioli.reddit.features.details.api.DataChildrenItemContent;
+import org.samples.blassioli.reddit.api.posts.ListingData;
+import org.samples.blassioli.reddit.api.posts.ListingOfLinks;
+import org.samples.blassioli.reddit.features.details.api.Comment;
+import org.samples.blassioli.reddit.features.details.api.CommentData;
 import org.samples.blassioli.reddit.features.details.api.DetailsApi;
 import org.samples.blassioli.reddit.features.details.api.DetailsApiResponse;
-import org.samples.blassioli.reddit.features.details.api.DetailsData;
-import org.samples.blassioli.reddit.features.details.api.DetailsDataChildren;
-import org.samples.blassioli.reddit.features.details.data.DetailsRemoteDataStore;
+import org.samples.blassioli.reddit.features.details.api.ListingOfComments;
 import org.samples.blassioli.reddit.features.details.model.DetailsModel;
 import org.samples.blassioli.reddit.utils.RandomData;
 
@@ -44,7 +44,7 @@ public class DetailsRemoteDataStoreTest {
         String sub = RandomData.randomString(256);
         String linkId = RandomData.randomString(36);
         detailsDataStore.getDetails(sub, linkId);
-        verify(mockDetailsApi).getDetails(eq(sub), eq(linkId), anyInt());
+        verify(mockDetailsApi).getDetails(eq(sub), eq(linkId), anyInt(), anyInt());
     }
 
     @Test
@@ -52,14 +52,14 @@ public class DetailsRemoteDataStoreTest {
         // FakeResponse
         DetailsApiResponseBuilder builder = new DetailsApiResponseBuilder();
         for (int i = 0; i < 100; i++) {
-            builder.withChild(new DataChildrenItemBuilder()
+            builder.withChild(new CommentBuilder()
                     .withId("comment#" + i)
                     .withKind("t1")
                     .build());
         }
         DetailsApiResponse fakeResponse = builder.build();
 
-        when(mockDetailsApi.getDetails(any(), any(), anyInt()))
+        when(mockDetailsApi.getDetails(any(), any(), anyInt(), anyInt()))
                 .thenReturn(Single.just(fakeResponse));
         callGetDetailsWithRandomParameters()
                 .test()
@@ -76,7 +76,7 @@ public class DetailsRemoteDataStoreTest {
 
     @Test
     public void testGetDetails_shouldPropagateApiErrors() {
-        when(mockDetailsApi.getDetails(any(), any(), anyInt()))
+        when(mockDetailsApi.getDetails(any(), any(), anyInt(), anyInt()))
                 .thenReturn(Single.error(new Exception("Single Error")));
 
         callGetDetailsWithRandomParameters()
@@ -90,38 +90,28 @@ public class DetailsRemoteDataStoreTest {
         return detailsDataStore.getDetails(sub, linkId);
     }
 
-    private class DataChildrenItemBuilder {
-        private DataChildrenItem current;
+    private class CommentBuilder {
+        private Comment current;
 
-        public DataChildrenItemBuilder() {
-            current = new DataChildrenItem();
-            current.data = new DataChildrenItemContent();
+        public CommentBuilder() {
+            current = new Comment();
+            current.data = new CommentData();
             current.data.id = RandomData.randomString(36);
             current.data.author = RandomData.randomString(40);
             current.data.body = RandomData.randomString(2056);
         }
 
-        public DataChildrenItemBuilder withId(String id) {
+        public CommentBuilder withId(String id) {
             current.data.id = id;
             return this;
         }
 
-        public DataChildrenItemBuilder withAuthor(String author) {
-            current.data.author = author;
-            return this;
-        }
-
-        public DataChildrenItemBuilder withBody(String body) {
-            current.data.body = body;
-            return this;
-        }
-
-        public DataChildrenItemBuilder withKind(String kind) {
+        public CommentBuilder withKind(String kind) {
             current.kind = kind;
             return this;
         }
 
-        public DataChildrenItem build() {
+        public Comment build() {
             return current;
         }
 
@@ -132,20 +122,16 @@ public class DetailsRemoteDataStoreTest {
 
         public DetailsApiResponseBuilder() {
             current = new DetailsApiResponse();
-            current.childWithT1 = new DetailsData();
-            current.childWithT1.data = new DetailsDataChildren();
+            current.childWithT1 = new ListingOfComments();
+            current.childWithT1.data = new ListingData<>();
             current.childWithT1.data.children = new ArrayList<>();
-            current.childWithT3 = new DetailsData();
-            current.childWithT3.data = new DetailsDataChildren();
+            current.childWithT3 = new ListingOfLinks();
+            current.childWithT3.data = new ListingData<>();
             current.childWithT3.data.children = new ArrayList<>();
         }
 
-        public DetailsApiResponseBuilder withChild(DataChildrenItem child) {
-            if ("t1".equals(child.kind)) {
-                current.childWithT1.data.children.add(child);
-            } else {
-                current.childWithT3.data.children.add(child);
-            }
+        public DetailsApiResponseBuilder withChild(Comment child) {
+            current.childWithT1.data.children.add(child);
             return this;
         }
 

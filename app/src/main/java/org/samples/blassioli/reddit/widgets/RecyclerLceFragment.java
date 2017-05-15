@@ -48,7 +48,7 @@ public abstract class RecyclerLceFragment<
         recyclerView.setAdapter(adapter);
     }
 
-    protected abstract void loadMoreData(String after);
+    protected void loadMoreData(String after) {}
 
     protected EndlessRecyclerViewScrollListener getScrollListener() {
         return new EndlessRecyclerViewScrollListener(layoutManager) {

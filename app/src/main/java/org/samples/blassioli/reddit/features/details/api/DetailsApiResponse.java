@@ -1,9 +1,9 @@
 package org.samples.blassioli.reddit.features.details.api;
 
-import java.util.List;
+import org.samples.blassioli.reddit.api.posts.ListingOfLinks;
 
 public class DetailsApiResponse {
-    public DetailsData childWithT3;
+    public ListingOfLinks childWithT3;
 
-    public DetailsData childWithT1;
+    public ListingOfComments childWithT1;
 }

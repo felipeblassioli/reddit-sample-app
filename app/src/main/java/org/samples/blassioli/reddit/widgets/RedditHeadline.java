@@ -20,7 +20,6 @@ public class RedditHeadline extends LinearLayout {
     public RedditHeadline(Context context) {
         super(context);
         init(context);
-
     }
 
     public RedditHeadline(Context context, AttributeSet attrs) {

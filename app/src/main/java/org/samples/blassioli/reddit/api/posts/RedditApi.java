@@ -7,8 +7,8 @@ import retrofit2.http.Query;
 
 public interface RedditApi {
     @GET("/r/{subreddit}/{label}/.json")
-    Single<RedditListingResponse> getSubRedditPosts(@Path("subreddit") String subreddit,
-                                                    @Path("label") String label,
-                                                    @Query("after") String after,
-                                                    @Query("limit") String limit);
+    Single<ListingOfLinks> getSubRedditPosts(@Path("subreddit") String subreddit,
+                                             @Path("label") String label,
+                                             @Query("after") String after,
+                                             @Query("limit") String limit);
 }

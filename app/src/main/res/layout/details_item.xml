@@ -6,10 +6,10 @@
     android:paddingLeft="@dimen/material_component_lists_icon_left_padding"
     android:paddingRight="@dimen/material_component_lists_icon_left_padding">
 
-    <include layout="@layout/details_item_header" />
+    <include layout="@layout/details_item_header" android:id="@+id/header_container" />
 
-    <include layout="@layout/details_item_body" />
+    <include layout="@layout/details_item_body" android:id="@+id/body_container" />
 
-    <include layout="@layout/details_item_footer" />
+    <include layout="@layout/details_item_footer" android:id="@+id/footer_container" />
 
 </LinearLayout>

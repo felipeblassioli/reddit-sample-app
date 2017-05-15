@@ -21,7 +21,7 @@ public class DetailsFragmentTest {
     @Test
     public void testNewInstance() {
         String subrreditId = RandomData.randomString(36);
-        DetailsFragment fragment = DetailsFragment.newInstance(subrreditId);
+        DetailsFragment fragment = DetailsFragment.newInstance(subrreditId, null);
 
         assertThat(fragment).isNotNull();
         assertThat(fragment.getArguments()).isNotNull();
@@ -33,7 +33,7 @@ public class DetailsFragmentTest {
     @Config(application = AndroidApplication.class)
     public void testOnViewCreated_shouldCallLoadData() {
         String subrreditId = RandomData.randomString(36);
-        DetailsFragment fragment = spy(DetailsFragment.newInstance(subrreditId));
+        DetailsFragment fragment = spy(DetailsFragment.newInstance(subrreditId, null));
         SupportFragmentTestUtil.startFragment(fragment);
 
         verify(fragment).loadData(anyBoolean());

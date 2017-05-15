@@ -1,11 +1,12 @@
 package org.samples.blassioli.reddit.features.details.model;
 
-public class DetailsItem {
+public class CommentModel {
+    public String kind;
     public String id;
     public String author;
     public String body;
-    public String ups;
+    public Integer ups;
     public Long created;
     public Long createdUtc;
-    public int depth;
+    public Integer depth;
 }

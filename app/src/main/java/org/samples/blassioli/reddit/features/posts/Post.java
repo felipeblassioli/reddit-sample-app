@@ -1,31 +1,20 @@
 package org.samples.blassioli.reddit.features.posts;
 
-public class Post {
-    String id;
-    String author;
-    String title;
-    String numComments;
-    Long created;
-    Long createdUtc;
-    String thumbnail;
-    String url;
-    String permalink;
-    String selftext;
-    String ups;
+import org.parceler.Parcel;
+import org.samples.blassioli.reddit.api.posts.PreviewData;
 
-    public Post(String id, String author, String title, String numComments,
-                Long created, Long createdUtc, String thumbnail, String url, String permalink,
-                String selftext, String ups) {
-        this.id = id;
-        this.author = author;
-        this.title = title;
-        this.numComments = numComments;
-        this.created = created;
-        this.createdUtc = createdUtc;
-        this.thumbnail = thumbnail;
-        this.url = url;
-        this.permalink = permalink;
-        this.selftext = selftext;
-        this.ups = ups;
-    }
+@Parcel
+public class Post {
+    public String id;
+    public String author;
+    public String title;
+    public String numComments;
+    public Long created;
+    public Long createdUtc;
+    public String thumbnail;
+    public String url;
+    public String permalink;
+    public String selftext;
+    public String ups;
+    public PreviewData preview;
 }

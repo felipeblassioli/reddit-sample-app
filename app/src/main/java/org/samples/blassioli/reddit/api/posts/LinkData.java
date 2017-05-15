@@ -1,6 +1,6 @@
 package org.samples.blassioli.reddit.api.posts;
 
-public class RedditPostsDataResponse {
+public class LinkData {
     public String id;
     public String author;
     public String title;
@@ -12,4 +12,5 @@ public class RedditPostsDataResponse {
     public String ups;
     public String permalink;
     public String selftext;
+    public PreviewData preview;
 }

@@ -8,6 +8,7 @@ import retrofit2.http.Query;
 public interface DetailsApi {
     @GET("/r/{subreddit}/comments/{id}/.json")
     Single<DetailsApiResponse> getDetails(@Path("subreddit") String sub,
-                                         @Path("id") String id,
-                                         @Query("depth") int depth);
+                                          @Path("id") String id,
+                                          @Query("depth") int depth,
+                                          @Query("limit") int limit);
 }

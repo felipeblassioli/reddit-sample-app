@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RedditLink extends CardView {
-    private final Activity activity;
+    private Activity activity;
 
     @BindView(R.id.content_layout)
     public ViewGroup contentGroup;
@@ -50,9 +51,24 @@ public class RedditLink extends CardView {
     @BindView(R.id.card_view)
     public CardView cardView;
 
+    public RedditLink(Context context) {
+        super(context);
+        init(context);
+    }
+
     public RedditLink(Context context, Activity activity) {
         super(context);
         this.activity = activity;
+        init(context);
+    }
+
+    public RedditLink(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    public RedditLink(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
         init(context);
     }
 
@@ -95,7 +111,7 @@ public class RedditLink extends CardView {
        cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = DetailsActivity.createIntent(activity, p.id);
+                Intent intent = DetailsActivity.createIntent(activity, p.id, p);
                 activity.startActivity(intent);
                 activity.overridePendingTransition(R.anim.slide_up, R.anim.no_change);
             }

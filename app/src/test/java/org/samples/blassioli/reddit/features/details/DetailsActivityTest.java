@@ -28,7 +28,7 @@ public class DetailsActivityTest {
     @Test
     public void testOnCreate_shouldCall_initToolbar_then_showDetails() {
         String currentLinkId = RandomData.randomString(36);
-        Intent intent = DetailsActivity.createIntent(RuntimeEnvironment.application, currentLinkId);
+        Intent intent = DetailsActivity.createIntent(RuntimeEnvironment.application, currentLinkId, null);
         DetailsActivity activity = spy(Robolectric.buildActivity(DetailsActivity.class)
                 .withIntent(intent)
                 .get());
@@ -41,7 +41,7 @@ public class DetailsActivityTest {
     @Test
     public void testOnBackPressed_shouldCall_overridePendingAnimation() {
         String currentLinkId = RandomData.randomString(36);
-        Intent intent = DetailsActivity.createIntent(RuntimeEnvironment.application, currentLinkId);
+        Intent intent = DetailsActivity.createIntent(RuntimeEnvironment.application, currentLinkId, null);
         DetailsActivity activity = spy(Robolectric.buildActivity(DetailsActivity.class)
                 .withIntent(intent)
                 .create()
@@ -56,7 +56,7 @@ public class DetailsActivityTest {
     @Test
     public void testOnSupportNavigateUp_shouldCall_onBackPressed() {
         String currentLinkId = RandomData.randomString(36);
-        Intent intent = DetailsActivity.createIntent(RuntimeEnvironment.application, currentLinkId);
+        Intent intent = DetailsActivity.createIntent(RuntimeEnvironment.application, currentLinkId, null);
         DetailsActivity activity = spy(Robolectric.buildActivity(DetailsActivity.class)
                 .withIntent(intent)
                 .create()
@@ -71,7 +71,7 @@ public class DetailsActivityTest {
     @Test
     public void testCreateIntent() {
         String linkId = "linkId";
-        Intent intent = DetailsActivity.createIntent(RuntimeEnvironment.application, linkId);
+        Intent intent = DetailsActivity.createIntent(RuntimeEnvironment.application, linkId, null);
         assertThat(intent).isNotNull();
         assertThat(intent.getExtras()).isNotNull();
         assertThat(intent.getExtras().getString(DetailsActivity.P_LINK_ID)).isEqualTo(linkId);
