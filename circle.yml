@@ -1,23 +1,32 @@
 machine:
+  java:
+    version: oraclejdk8
   environment:
     KEYSTORE: ${HOME}/${CIRCLE_PROJECT_REPONAME}/sigining.keystore
     ANDROID_HOME: /usr/local/android-sdk-linux
     VERSION_CODE: ${CIRCLE_BUILD_NUM}
     VERSION_NAME: "1.0.${VERSION_CODE}"
+    QEMU_AUDIO_DRV: none
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
 dependencies:
   pre:
     - bash ./buildsystem/download_keystore.sh
-  override:
     - echo y | android update sdk --no-ui --all --filter "platform-tools, tools"
     - echo y | android update sdk --no-ui --all --filter "android-25, build-tools-25.0.2"
     - echo y | android update sdk --no-ui --all --filter "extra-android-m2repository"
     - echo y | android update sdk --no-ui --all --filter "extra-android-support"
     # https://discuss.circleci.com/t/constraintlayout-1-0-2/11112
     - echo y | $ANDROID_HOME/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
+  override:
     - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
 
 test:
+  pre:
+    - emulator -avd circleci-android24 -no-window:
+        background: true
+        parallel: true
+    - circle-android wait-for-boot
   override:
      - ./gradlew test jacocoTestReport assembleRelease
   post:
