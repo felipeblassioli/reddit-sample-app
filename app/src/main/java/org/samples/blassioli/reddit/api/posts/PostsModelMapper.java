@@ -28,6 +28,8 @@ public class PostsModelMapper {
                     post.selftext = data.selftext;
                     post.ups = data.ups;
                     post.preview = data.preview;
+                    post.domain = data.domain;
+                    post.postHint = data.post_hint;
                     return post;
                 }
             };

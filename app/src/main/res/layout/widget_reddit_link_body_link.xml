@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/halfGap"
+    android:paddingBottom="32dp">
+
+    <ImageView
+        android:id="@+id/preview_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/widget_reddit_link_body_link_preview_image_height" />
+
+    <TextView
+        android:background="@drawable/widget_reddit_link_body_link_url_box"
+        android:padding="@dimen/halfGap"
+        android:id="@+id/url_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/widget_reddit_link_body_link_url_text"
+        android:textSize="@dimen/widget_reddit_link_body_url_text_size"
+        android:text="http://reddit.com" />
+
+</LinearLayout>

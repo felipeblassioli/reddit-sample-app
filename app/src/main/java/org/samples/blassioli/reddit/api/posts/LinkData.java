@@ -13,4 +13,6 @@ public class LinkData {
     public String permalink;
     public String selftext;
     public PreviewData preview;
+    public String domain;
+    public String post_hint;
 }

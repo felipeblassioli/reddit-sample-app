@@ -34,7 +34,7 @@ public class Comment extends LinearLayout {
     @BindView(R.id.headline)
     public RedditHeadline headline;
 
-    @BindView(R.id.body_text)
+    @BindView(R.id.subtitle_text)
     public TextView body;
 
     @BindView(R.id.ups)
@@ -55,13 +55,13 @@ public class Comment extends LinearLayout {
     public void setDepth(int depth) {
         marginContainer.removeAllViews();
         VerticalLineBuilder verticalLineBuilder = new VerticalLineBuilder(getContext());
-        for(int i=0; i < depth; i++) {
+        for (int i = 0; i < depth; i++) {
             marginContainer.addView(verticalLineBuilder.create());
         }
     }
 
     public void setData(CommentModel model) {
-        if(model.kind.equals("more")) {
+        if (model.kind.equals("more")) {
             this.headerContainer.setVisibility(View.GONE);
             this.footerContainer.setVisibility(View.GONE);
             this.body.setText("MORE");
@@ -99,9 +99,9 @@ public class Comment extends LinearLayout {
 
         private int toPixel(int dp) {
             return (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                r.getDisplayMetrics()
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    dp,
+                    r.getDisplayMetrics()
             );
         }
     }

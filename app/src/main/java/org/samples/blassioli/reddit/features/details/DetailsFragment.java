@@ -12,11 +12,11 @@ import org.samples.blassioli.reddit.R;
 import org.samples.blassioli.reddit.features.details.model.CommentModel;
 import org.samples.blassioli.reddit.features.details.model.DetailsAdapter;
 import org.samples.blassioli.reddit.features.details.model.DetailsModel;
+import org.samples.blassioli.reddit.features.details.widgets.LinkHeader;
 import org.samples.blassioli.reddit.features.posts.Post;
 import org.samples.blassioli.reddit.widgets.EndlessRecyclerViewScrollListener;
 import org.samples.blassioli.reddit.widgets.RecyclerLceFragment;
 import org.samples.blassioli.reddit.widgets.RecyclerViewListAdapter;
-import org.samples.blassioli.reddit.widgets.RedditLink;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +28,7 @@ public class DetailsFragment extends RecyclerLceFragment<DetailsModel, DetailsVi
 
     protected static final String P_LINK_DATA = "parameterLinKData";
     @BindView(R.id.link_header)
-    RedditLink header;
+    LinkHeader header;
     private DetailsComponent detailsComponent;
     private String subredditId;
     private Post post;

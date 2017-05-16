@@ -18,7 +18,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             >
 
-            <org.samples.blassioli.reddit.widgets.RedditLink
+            <org.samples.blassioli.reddit.features.details.widgets.LinkHeader
                 android:id="@+id/link_header"
                 app:layout_scrollFlags="scroll|enterAlways"
                 android:layout_width="match_parent"

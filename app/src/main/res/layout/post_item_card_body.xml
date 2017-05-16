@@ -1,47 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_body"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingBottom="24dp">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/content_layout"
+
+    <!-- Must respect negative margins -->
+    <RelativeLayout
+        android:id="@+id/content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight=".3">
-        <TextView
-            android:id="@+id/title_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="BLBLALLA"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-thin"
-            android:textColor="@color/primary_text"
-            />
-
-        <TextView
-            android:id="@+id/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-thin"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:textSize="12sp" />
-    </LinearLayout>
-
-
-    <ImageView
-        android:id="@+id/img_thumbnail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight=".7"
-        android:layout_marginRight="10dp"
+        android:paddingBottom="@dimen/gap"
         />
 
-</LinearLayout>
+</RelativeLayout>
 

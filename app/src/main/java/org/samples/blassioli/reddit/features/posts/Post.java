@@ -17,4 +17,6 @@ public class Post {
     public String selftext;
     public String ups;
     public PreviewData preview;
+    public String domain;
+    public String postHint;
 }

@@ -4,12 +4,60 @@
     android:id="@+id/card_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/gap"
+    android:paddingRight="@dimen/gap"
+    android:paddingTop="@dimen/gap"
+    android:paddingBottom="@dimen/halfGap">
 
     <org.samples.blassioli.reddit.widgets.RedditHeadline
         android:id="@+id/headline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/gap">
+
+        <LinearLayout
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight=".3">
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BLBLALLA"
+                android:textSize="@dimen/post_item_card_title_size"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-thin"
+                android:textColor="@color/primary_text"
+                />
+
+            <TextView
+                android:id="@+id/subtitle_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-thin"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/img_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_weight=".7"
+            />
+
+    </LinearLayout>
+
 
 </LinearLayout>
 

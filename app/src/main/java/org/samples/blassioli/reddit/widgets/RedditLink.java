@@ -1,8 +1,6 @@
 package org.samples.blassioli.reddit.widgets;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import org.samples.blassioli.reddit.R;
-import org.samples.blassioli.reddit.features.details.DetailsActivity;
 import org.samples.blassioli.reddit.features.posts.Post;
 import org.samples.blassioli.reddit.picasso.RoundedTransformation;
 
@@ -25,40 +22,31 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RedditLink extends CardView {
-    private Activity activity;
+    @BindView(R.id.content_container)
+    public ViewGroup contentContainer;
 
     @BindView(R.id.content_layout)
     public ViewGroup contentGroup;
-
     @BindView(R.id.headline)
     public RedditHeadline headline;
-
     @BindView(R.id.title_text)
     public TextView title;
-
     @BindView(R.id.img_thumbnail)
     public ImageView thumbnail;
-
-    @BindView(R.id.body_text)
-    public TextView body;
-
+    @BindView(R.id.subtitle_text)
+    public TextView subtitleText;
     @BindView(R.id.ups)
     public TextView ups;
-
     @BindView(R.id.total_comments)
     public TextView totalComments;
-
     @BindView(R.id.card_view)
     public CardView cardView;
 
+/*    @BindView(R.id.external_url)
+    public ExternalUrl url;*/
+
     public RedditLink(Context context) {
         super(context);
-        init(context);
-    }
-
-    public RedditLink(Context context, Activity activity) {
-        super(context);
-        this.activity = activity;
         init(context);
     }
 
@@ -107,24 +95,24 @@ public class RedditLink extends CardView {
         }
     }
 
-    public void setData(Post p) {
-       cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = DetailsActivity.createIntent(activity, p.id, p);
-                activity.startActivity(intent);
-                activity.overridePendingTransition(R.anim.slide_up, R.anim.no_change);
-            }
-        });
+    public void setData(Post model) {
+        //url.setVisibility(View.GONE);
+        contentContainer.setVisibility(View.GONE);
+        title.setText(model.title);
+        headline.setAuthor(model.author);
+        headline.setCreatedUtc(model.createdUtc);
 
-        title.setText(p.title);
-        headline.setAuthor(p.author);
-        headline.setCreatedUtc(p.createdUtc);
+        setThumbnail(model.thumbnail);
 
-        setThumbnail(p.thumbnail);
-
-        body.setText(p.selftext);
-        ups.setText(p.ups);
-        totalComments.setText(p.numComments);
+        subtitleText.setText(getFormatedSubtitleText(model));
+        ups.setText(model.ups);
+        totalComments.setText(model.numComments);
     }
+
+    protected String getFormatedSubtitleText(Post p) {
+        // TODO: Estimate the text size on the screen and take first 3 or 4 lines
+        String text = p.selftext;
+        return text.length() >= 256? text.substring(0, 255) : text;
+    }
+
 }

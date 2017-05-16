@@ -3,4 +3,21 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="gap">16dp</dimen>
+    <dimen name="halfGap">8dp</dimen>
+    <dimen name="quarterGap">4dp</dimen>
+
+    <!-- Custom widgets -->
+    <dimen name="post_item_card_title_size">16sp</dimen>
+
+    <!-- widgets.RedditLink -->
+
+    <!-- details.widgets.content.Self -->
+
+    <!-- details.widgets.content.Image -->
+
+    <!-- details.widgets.content.Link -->
+    <dimen name="widget_reddit_link_body_link_preview_image_height">150dp</dimen>
+    <dimen name="widget_reddit_link_body_url_text_size">10sp</dimen>
 </resources>
