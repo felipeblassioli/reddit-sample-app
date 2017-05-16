@@ -77,7 +77,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.fade_out, R.anim.no_change);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
