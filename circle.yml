@@ -25,12 +25,18 @@ dependencies:
 
 test:
   override:
-    - emulator -avd circleci-android24 -no-window:
+    - emulator -avd circleci-android22 -no-window:
         background: true
         parallel: true
     - circle-android wait-for-boot
     - sleep 30
     - adb shell input keyevent 82
+    # First download the bash script
+    - wget http://imgur.com/tools/imgurbash.sh
+    - chmod a+x imgurbash.sh
+    - adb shell screencap -p | sed 's/\r$//' > bootscreen.png
+    - mv bootscreen.png $CIRCLE_ARTIFACTS/bootscreen.png
+    - ./imgurbash.sh bootscreen.png
     - ./gradlew test jacocoTestReport assembleRelease
   post:
      # .apk
