@@ -16,7 +16,7 @@
     <!-- details.widgets.content.Self -->
 
     <!-- details.widgets.content.Image -->
-
+    <dimen name="widget_reddit_link_body_image_preview_image_height">300dp</dimen>
     <!-- details.widgets.content.Link -->
     <dimen name="widget_reddit_link_body_link_preview_image_height">150dp</dimen>
     <dimen name="widget_reddit_link_body_url_text_size">10sp</dimen>

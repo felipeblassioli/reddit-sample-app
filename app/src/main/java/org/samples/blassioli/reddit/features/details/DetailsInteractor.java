@@ -27,7 +27,7 @@ public class DetailsInteractor extends BaseRxInteractor<DetailsModel, DetailsInt
     @Override
     protected Observable<DetailsModel> buildObservable(Params params) {
         return dataStore.getDetails(params.subreddit, params.id)
-                .timeout(5500, TimeUnit.MILLISECONDS);
+                .timeout(10000, TimeUnit.MILLISECONDS);
     }
 
     public static class Params {

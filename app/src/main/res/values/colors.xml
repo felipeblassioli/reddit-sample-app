@@ -15,7 +15,8 @@
     <color name="colorAccent">@color/accent</color>
 
     <!-- Custom Widgets -->
-
+    <!-- details.widgets.content.Image -->
+    <color name="widget_reddit_link_body_image_preview_image_box_background">@color/material_light_black</color>
     <!-- details.widgets.content.Link -->
     <color name="widget_reddit_link_body_link_url_text">@color/material_blue_500</color>
     <color name="widget_reddit_link_body_link_url_box_border">@color/material_grey_50</color>
