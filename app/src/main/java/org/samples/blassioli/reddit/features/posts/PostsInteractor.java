@@ -21,7 +21,7 @@ public class PostsInteractor extends BaseRxInteractor<PostListModel, PostsIntera
 
     protected Observable<PostListModel> buildObservable(Params params) {
         return dataStore.getPostsList(params.subreddit, params.label, params.after, params.limit)
-                .timeout(5500, TimeUnit.MILLISECONDS);
+                .timeout(10000, TimeUnit.MILLISECONDS);
     }
 
     public static class Params {
