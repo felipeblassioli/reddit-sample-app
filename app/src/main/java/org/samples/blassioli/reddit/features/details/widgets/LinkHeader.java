@@ -83,12 +83,16 @@ public class LinkHeader extends RedditLink {
                     Link linkContent = new Link(getContext());
                     linkContent.setData(model);
                     contentView = linkContent;
+                    this.chromeTabUrl = model.url;
+                    contentView.setOnClickListener(openCustomChromeTab);
                     break;
                 case "rich:video":
                 case "image":
                     Image imageContent = new Image(getContext());
                     imageContent.setData(model);
                     contentView = imageContent;
+                    this.chromeTabUrl = model.url;
+                    contentView.setOnClickListener(openCustomChromeTab);
                     break;
                 case "self":
                     Self selfContent = new Self(getContext());
