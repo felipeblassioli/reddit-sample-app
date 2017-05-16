@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 
 import org.samples.blassioli.reddit.AndroidApplication;
 import org.samples.blassioli.reddit.R;
+import org.samples.blassioli.reddit.features.posts.model.Post;
+import org.samples.blassioli.reddit.features.posts.model.PostListModel;
+import org.samples.blassioli.reddit.features.posts.widgets.PostsAdapter;
 import org.samples.blassioli.reddit.widgets.RecyclerLceFragment;
 import org.samples.blassioli.reddit.widgets.RecyclerViewListAdapter;
 

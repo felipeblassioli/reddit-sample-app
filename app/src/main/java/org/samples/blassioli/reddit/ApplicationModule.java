@@ -5,13 +5,13 @@ import android.content.Context;
 import com.squareup.moshi.Moshi;
 
 import org.samples.blassioli.reddit.api.posts.PreviewDataConverter;
-import org.samples.blassioli.reddit.api.posts.RedditApi;
+import org.samples.blassioli.reddit.features.posts.api.RedditApi;
 import org.samples.blassioli.reddit.executor.JobExecutor;
 import org.samples.blassioli.reddit.executor.PostExecutionThread;
 import org.samples.blassioli.reddit.executor.ThreadExecutor;
 import org.samples.blassioli.reddit.executor.UIThread;
-import org.samples.blassioli.reddit.features.posts.PostsDataStore;
-import org.samples.blassioli.reddit.features.posts.PostsRemoteDataStore;
+import org.samples.blassioli.reddit.features.posts.data.PostsDataStore;
+import org.samples.blassioli.reddit.features.posts.data.PostsRemoteDataStore;
 
 import dagger.Module;
 import dagger.Provides;
@@ -42,23 +42,4 @@ public class ApplicationModule {
         return uiThread;
     }
 
-    @Provides
-    RedditApi providesRedditApi() {
-        Moshi moshi = new Moshi.Builder()
-                .add(new PreviewDataConverter())
-                .build();
-        Retrofit retrofit =
-                new Retrofit.Builder()
-                        .baseUrl("https://www.reddit.com")
-                        .addConverterFactory(MoshiConverterFactory.create(moshi))
-                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                        .build();
-
-        return retrofit.create(RedditApi.class);
-    }
-
-    @Provides
-    PostsDataStore providesPostsDataStore(RedditApi api) {
-        return new PostsRemoteDataStore(api);
-    }
 }

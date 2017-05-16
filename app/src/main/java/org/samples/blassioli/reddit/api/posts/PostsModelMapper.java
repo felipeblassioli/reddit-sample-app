@@ -3,8 +3,8 @@ package org.samples.blassioli.reddit.api.posts;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
-import org.samples.blassioli.reddit.features.posts.Post;
-import org.samples.blassioli.reddit.features.posts.PostListModel;
+import org.samples.blassioli.reddit.features.posts.model.Post;
+import org.samples.blassioli.reddit.features.posts.model.PostListModel;
 
 import java.util.ArrayList;
 

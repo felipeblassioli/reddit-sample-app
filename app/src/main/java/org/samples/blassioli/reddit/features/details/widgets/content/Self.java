@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.samples.blassioli.reddit.R;
-import org.samples.blassioli.reddit.features.posts.Post;
+import org.samples.blassioli.reddit.features.posts.model.Post;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

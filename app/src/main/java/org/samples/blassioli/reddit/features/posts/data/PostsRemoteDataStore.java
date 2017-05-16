@@ -1,8 +1,9 @@
-package org.samples.blassioli.reddit.features.posts;
+package org.samples.blassioli.reddit.features.posts.data;
 
 
 import org.samples.blassioli.reddit.api.posts.PostsModelMapper;
-import org.samples.blassioli.reddit.api.posts.RedditApi;
+import org.samples.blassioli.reddit.features.posts.api.RedditApi;
+import org.samples.blassioli.reddit.features.posts.model.PostListModel;
 
 import javax.inject.Inject;
 

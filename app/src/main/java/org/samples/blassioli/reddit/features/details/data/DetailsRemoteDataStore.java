@@ -6,7 +6,6 @@ import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
 
-import org.samples.blassioli.reddit.api.posts.LinkData;
 import org.samples.blassioli.reddit.api.posts.PostsModelMapper;
 import org.samples.blassioli.reddit.features.details.api.Comment;
 import org.samples.blassioli.reddit.features.details.api.CommentData;
@@ -14,8 +13,7 @@ import org.samples.blassioli.reddit.features.details.api.DetailsApi;
 import org.samples.blassioli.reddit.features.details.api.DetailsApiResponse;
 import org.samples.blassioli.reddit.features.details.model.CommentModel;
 import org.samples.blassioli.reddit.features.details.model.DetailsModel;
-import org.samples.blassioli.reddit.features.posts.Post;
-import org.samples.blassioli.reddit.features.posts.PostListModel;
+import org.samples.blassioli.reddit.features.posts.model.Post;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

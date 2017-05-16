@@ -1,4 +1,6 @@
-package org.samples.blassioli.reddit.features.posts;
+package org.samples.blassioli.reddit.features.posts.data;
+
+import org.samples.blassioli.reddit.features.posts.model.PostListModel;
 
 import io.reactivex.Observable;
 

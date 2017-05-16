@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.samples.blassioli.reddit.features.posts.data.PostsDataStore;
+import org.samples.blassioli.reddit.features.posts.model.PostListModel;
 import org.samples.blassioli.reddit.utils.RandomData;
 
 import io.reactivex.Observable;

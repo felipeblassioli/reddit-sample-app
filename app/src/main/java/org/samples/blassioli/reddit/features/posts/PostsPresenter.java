@@ -2,6 +2,7 @@ package org.samples.blassioli.reddit.features.posts;
 
 
 import org.samples.blassioli.reddit.BaseRxLcePresenter;
+import org.samples.blassioli.reddit.features.posts.model.PostListModel;
 
 import javax.inject.Inject;
 

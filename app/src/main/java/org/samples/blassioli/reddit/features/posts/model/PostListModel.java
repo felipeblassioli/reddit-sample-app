@@ -1,4 +1,4 @@
-package org.samples.blassioli.reddit.features.posts;
+package org.samples.blassioli.reddit.features.posts.model;
 
 import android.support.annotation.NonNull;
 

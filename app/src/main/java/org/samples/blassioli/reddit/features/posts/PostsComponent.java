@@ -1,6 +1,7 @@
 package org.samples.blassioli.reddit.features.posts;
 
 import org.samples.blassioli.reddit.ApplicationComponent;
+import org.samples.blassioli.reddit.features.posts.data.PostsDataStore;
 
 import dagger.Component;
 
@@ -10,6 +11,8 @@ import dagger.Component;
 public interface PostsComponent {
 
     PostsPresenter presenter();
+
+    PostsDataStore postsDataStore();
 
     void inject(PostsFragment fragment);
 

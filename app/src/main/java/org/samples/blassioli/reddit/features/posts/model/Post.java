@@ -1,4 +1,4 @@
-package org.samples.blassioli.reddit.features.posts;
+package org.samples.blassioli.reddit.features.posts.model;
 
 import org.parceler.Parcel;
 import org.samples.blassioli.reddit.api.posts.PreviewData;

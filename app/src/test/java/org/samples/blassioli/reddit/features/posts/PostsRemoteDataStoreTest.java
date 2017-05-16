@@ -4,11 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.samples.blassioli.reddit.api.posts.RedditApi;
+import org.samples.blassioli.reddit.features.posts.api.RedditApi;
 import org.samples.blassioli.reddit.api.posts.Link;
 import org.samples.blassioli.reddit.api.posts.ListingData;
 import org.samples.blassioli.reddit.api.posts.ListingOfLinks;
 import org.samples.blassioli.reddit.api.posts.LinkData;
+import org.samples.blassioli.reddit.features.posts.data.PostsRemoteDataStore;
+import org.samples.blassioli.reddit.features.posts.model.PostListModel;
 import org.samples.blassioli.reddit.utils.RandomData;
 
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
 package org.samples.blassioli.reddit.api.posts;
 
+import org.samples.blassioli.reddit.api.posts.PreviewData;
+
 public class LinkData {
     public String id;
     public String author;

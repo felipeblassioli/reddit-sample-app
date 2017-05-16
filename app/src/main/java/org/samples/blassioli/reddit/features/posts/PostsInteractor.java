@@ -1,6 +1,8 @@
 package org.samples.blassioli.reddit.features.posts;
 
 import org.samples.blassioli.reddit.BaseRxInteractor;
+import org.samples.blassioli.reddit.features.posts.data.PostsDataStore;
+import org.samples.blassioli.reddit.features.posts.model.PostListModel;
 
 import java.util.concurrent.TimeUnit;
 

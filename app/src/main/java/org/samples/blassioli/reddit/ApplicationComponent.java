@@ -4,9 +4,6 @@ import android.content.Context;
 
 import org.samples.blassioli.reddit.executor.PostExecutionThread;
 import org.samples.blassioli.reddit.executor.ThreadExecutor;
-import org.samples.blassioli.reddit.features.posts.PostsDataStore;
-
-import javax.inject.Singleton;
 
 import dagger.Component;
 
@@ -18,7 +15,8 @@ public interface ApplicationComponent {
     //void inject(BaseActivity baseActivity);
 
     Context context();
+
     ThreadExecutor threadExecutor();
+
     PostExecutionThread postExecutionThread();
-    PostsDataStore postsDataStore();
 }

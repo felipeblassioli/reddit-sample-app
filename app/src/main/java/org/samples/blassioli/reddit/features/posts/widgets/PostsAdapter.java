@@ -1,10 +1,11 @@
-package org.samples.blassioli.reddit.features.posts;
+package org.samples.blassioli.reddit.features.posts.widgets;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.samples.blassioli.reddit.features.posts.model.Post;
 import org.samples.blassioli.reddit.features.posts.widgets.Link;
 import org.samples.blassioli.reddit.widgets.RecyclerViewListAdapter;
 

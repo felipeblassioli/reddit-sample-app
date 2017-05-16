@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import org.samples.blassioli.reddit.R;
-import org.samples.blassioli.reddit.features.posts.Post;
+import org.samples.blassioli.reddit.features.posts.model.Post;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

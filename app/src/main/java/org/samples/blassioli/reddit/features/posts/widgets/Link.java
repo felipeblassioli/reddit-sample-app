@@ -8,7 +8,7 @@ import android.view.View;
 
 import org.samples.blassioli.reddit.R;
 import org.samples.blassioli.reddit.features.details.DetailsActivity;
-import org.samples.blassioli.reddit.features.posts.Post;
+import org.samples.blassioli.reddit.features.posts.model.Post;
 import org.samples.blassioli.reddit.widgets.RedditLink;
 
 public class Link extends RedditLink {

@@ -1,8 +1,7 @@
 package org.samples.blassioli.reddit.features.details.model;
 
 import org.samples.blassioli.reddit.PaginatedModel;
-import org.samples.blassioli.reddit.api.posts.LinkData;
-import org.samples.blassioli.reddit.features.posts.Post;
+import org.samples.blassioli.reddit.features.posts.model.Post;
 
 import java.util.List;
 

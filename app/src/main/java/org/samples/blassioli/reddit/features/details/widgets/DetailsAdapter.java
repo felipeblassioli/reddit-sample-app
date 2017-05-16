@@ -1,9 +1,10 @@
-package org.samples.blassioli.reddit.features.details.model;
+package org.samples.blassioli.reddit.features.details.widgets;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.samples.blassioli.reddit.features.details.model.CommentModel;
 import org.samples.blassioli.reddit.features.details.widgets.Comment;
 import org.samples.blassioli.reddit.widgets.RecyclerViewListAdapter;
 

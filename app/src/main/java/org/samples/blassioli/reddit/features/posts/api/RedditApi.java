@@ -1,4 +1,6 @@
-package org.samples.blassioli.reddit.api.posts;
+package org.samples.blassioli.reddit.features.posts.api;
+
+import org.samples.blassioli.reddit.api.posts.ListingOfLinks;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;
