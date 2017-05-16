@@ -2,6 +2,34 @@
 
 Sample MVP using the Mosby library.
 
+## Overview
+
+This application has two different screens:
+
+  1. *features.posts*: shows data from https://www.reddit.com/r/Android/new/.json
+  2. *features.details*: show data from https://www.reddit.com/r/Android/<link_id>/comments/.json
+
+Posts             |  Details 
+:-------------------------:|:-------------------------:
+![alt text](https://raw.githubusercontent.com/felipeblassioli/reddit-sample-app/master/screenshots/posts.png "Posts Screen")  | ![alt text](https://raw.githubusercontent.com/felipeblassioli/reddit-sample-app/master/screenshots/details.png "Details Screen")
+
+Some relevant features are:
+
+  1. Posts and Comment's recycler view support:
+    - TapToRetry
+    - Swipe to refresh
+    - Endless Scrolling
+
+## Testing
+
+Unit testing relies on *Mockito 2*, *AssertJ* and on *Roboletric 3* (for views).
+Instrumentation testing relies on *Espresso*.
+
+To generate a coverage report:
+```
+./gradlew jacocoTestReport
+```
+
 ## Continuos Integration
 
 CircleCI runs "./gradlew test jacocoTestReport assembleRelease" testing, generating a signed releaseApk and the coverage report.
