@@ -19,7 +19,7 @@ android {
         targetSdkVersion 25
         versionCode System.getenv("VERSION_CODE") as Integer ?: 1
         versionName System.getenv("VERSION_NAME") ?: "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "org.samples.blassioli.reddit.UnlockAndKeepAwakeTestRunner"
         com.android.ddmlib.DdmPreferences.setTimeOut(60000)
     }
     signingConfigs {
@@ -156,6 +156,24 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
             "jacoco/testDebugUnitTest.exec",
             "outputs/code-coverage/connected/*coverage.ec"
     ])
+}
+
+// Grant animation permissions to avoid test failure because of ui sync.
+task grantAnimationPermissions(type: Exec, dependsOn: 'installDebug') {
+    group = 'test'
+    description = 'Grant permissions for testing.'
+
+    def absolutePath = file('..') // Get project absolute path
+    commandLine "$absolutePath/buildsystem/set_animation_permissions.sh org.samples.blassioli.reddit".split(" ")
+}
+
+// Source: http://stackoverflow.com/q/29908110/112705
+afterEvaluate {
+    tasks.each { task ->
+        if (task.name.startsWith('assembleDebugAndroidTest')) {
+            task.dependsOn grantAnimationPermissions
+        }
+    }
 }
 
 tasks.coveralls {
