@@ -12,6 +12,7 @@ import android.view.View;
 import org.samples.blassioli.reddit.R;
 import org.samples.blassioli.reddit.features.details.widgets.content.Image;
 import org.samples.blassioli.reddit.features.details.widgets.content.Link;
+import org.samples.blassioli.reddit.features.details.widgets.content.Self;
 import org.samples.blassioli.reddit.features.posts.Post;
 import org.samples.blassioli.reddit.widgets.RedditLink;
 
@@ -90,6 +91,9 @@ public class LinkHeader extends RedditLink {
                     contentView = imageContent;
                     break;
                 case "self":
+                    Self selfContent = new Self(getContext());
+                    selfContent.setData(model);
+                    contentView = selfContent;
                     break;
             }
             if(contentView != null) {
