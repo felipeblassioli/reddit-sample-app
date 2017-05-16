@@ -8,6 +8,8 @@ machine:
     VERSION_NAME: "1.0.${VERSION_CODE}"
     QEMU_AUDIO_DRV: none
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+    TERM: "dumb"
+    ADB_INSTALL_TIMEOUT: "10"
 
 dependencies:
   pre:
@@ -22,13 +24,14 @@ dependencies:
     - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
 
 test:
-  pre:
+  override:
     - emulator -avd circleci-android24 -no-window:
         background: true
         parallel: true
     - circle-android wait-for-boot
-  override:
-     - ./gradlew test jacocoTestReport assembleRelease
+    - sleep 30
+    - adb shell input keyevent 82
+    - ./gradlew test jacocoTestReport assembleRelease
   post:
      # .apk
      - cp -r ${HOME}/${CIRCLE_PROJECT_REPONAME}/app/build/outputs/apk/ $CIRCLE_ARTIFACTS 
