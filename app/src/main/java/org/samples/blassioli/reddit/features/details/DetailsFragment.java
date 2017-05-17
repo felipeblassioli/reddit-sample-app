@@ -12,7 +12,7 @@ import org.samples.blassioli.reddit.R;
 import org.samples.blassioli.reddit.features.details.model.CommentModel;
 import org.samples.blassioli.reddit.features.details.widgets.DetailsAdapter;
 import org.samples.blassioli.reddit.features.details.model.DetailsModel;
-import org.samples.blassioli.reddit.features.details.widgets.LinkHeader;
+import org.samples.blassioli.reddit.features.details.widgets.LinkDetails;
 import org.samples.blassioli.reddit.features.posts.model.Post;
 import org.samples.blassioli.reddit.widgets.EndlessRecyclerViewScrollListener;
 import org.samples.blassioli.reddit.widgets.RecyclerLceFragment;
@@ -28,7 +28,7 @@ public class DetailsFragment extends RecyclerLceFragment<DetailsModel, DetailsVi
 
     protected static final String P_LINK_DATA = "parameterLinKData";
     @BindView(R.id.link_header)
-    LinkHeader header;
+    LinkDetails header;
     private DetailsComponent detailsComponent;
     private String subredditId;
     private Post post;

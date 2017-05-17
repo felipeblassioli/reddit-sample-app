@@ -96,7 +96,9 @@ dependencies {
     compile 'com.android.support:customtabs:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.dmitrymalkovich.android:material-design-dimens:1.4'
-    compile 'us.feras.mdv:markdownview:1.1.0'
+
+    // MarkdownView
+    compile 'org.markdownj:markdownj-core:0.4'
 
     // UI helpers
     compile 'com.squareup.picasso:picasso:2.5.2'

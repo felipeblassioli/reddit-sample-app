@@ -7,28 +7,28 @@ import android.view.View;
 import org.samples.blassioli.reddit.features.posts.model.Post;
 import org.samples.blassioli.reddit.widgets.reddit.BaseLink;
 
-public class LinkHeader extends BaseLink {
+public class LinkDetails extends BaseLink {
 
-    public LinkHeader(Context context) {
+    public LinkDetails(Context context) {
         super(context);
     }
 
-    public LinkHeader(Context context, AttributeSet attrs) {
+    public LinkDetails(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public LinkHeader(Context context, AttributeSet attrs, int defStyle) {
+    public LinkDetails(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
     @Override
     protected View createBody(Context context) {
-        return new LinkHeaderBody(context);
+        return new LinkDetailsBody(context);
     }
 
     @Override
     protected void onBodyBind(View view, Post model) {
-        ((LinkHeaderBody) view).setData(model);
+        ((LinkDetailsBody) view).setData(model);
     }
 
 }

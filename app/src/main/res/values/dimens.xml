@@ -8,13 +8,19 @@
     <dimen name="halfGap">8dp</dimen>
     <dimen name="quarterGap">4dp</dimen>
 
+    <!-- Details -->
+    <dimen name="details_comments_card_title_size">@dimen/material_typography_subheading</dimen>
+
     <!-- Custom widgets -->
     <dimen name="post_item_card_title_size">16sp</dimen>
 
     <!-- widgets.RedditHeadline -->
-    <dimen name="widget_reddit_headline_text_size">12sp</dimen>
+    <dimen name="widget_reddit_headline_text_size">@dimen/material_typography_caption</dimen>
 
     <!-- widgets.RedditLink -->
+
+    <!-- details.widgets.LinkDetailsBody -->
+    <dimen name="widget_reddit_link_details_body_title_size">@dimen/material_typography_headline</dimen>
 
     <!-- details.widgets.content.Self -->
 

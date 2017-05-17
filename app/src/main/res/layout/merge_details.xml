@@ -3,13 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/view_loading"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <include layout="@layout/view_error"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/details_comments_card_title_size"
+            android:textColor="@color/details_comments_card_title_color"
+            android:text="Comments"
+            android:padding="@dimen/halfGap"
+            />
 
-    <include layout="@layout/view_recycler_list" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/view_loading" />
 
-    <include
-        layout="@layout/default_empty_view" />
+            <include layout="@layout/view_error"/>
+
+            <include layout="@layout/view_recycler_list" />
+
+            <include layout="@layout/default_empty_view" />
+        </FrameLayout>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

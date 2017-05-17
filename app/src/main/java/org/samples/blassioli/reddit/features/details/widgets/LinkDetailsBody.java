@@ -7,9 +7,12 @@ import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.samples.blassioli.reddit.R;
 import org.samples.blassioli.reddit.features.details.widgets.content.Image;
@@ -17,10 +20,19 @@ import org.samples.blassioli.reddit.features.details.widgets.content.Link;
 import org.samples.blassioli.reddit.features.details.widgets.content.Self;
 import org.samples.blassioli.reddit.features.posts.model.Post;
 
-public class LinkHeaderBody extends RelativeLayout {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class LinkDetailsBody extends RelativeLayout {
     private String chromeTabUrl;
 
     private CustomTabsIntent chromeTabIntent;
+
+    @BindView(R.id.title_text)
+    TextView title;
+
+    @BindView(R.id.content_container)
+    RelativeLayout contentContainer;
 
     private OnClickListener openCustomChromeTab = new View.OnClickListener() {
         @Override
@@ -31,19 +43,29 @@ public class LinkHeaderBody extends RelativeLayout {
         }
     };
 
-    public LinkHeaderBody(Context context) {
+    public LinkDetailsBody(Context context) {
         super(context);
+        init(context);
         createAndSetTabIntent();
     }
 
-    public LinkHeaderBody(Context context, AttributeSet attrs) {
+    public LinkDetailsBody(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context);
         createAndSetTabIntent();
     }
 
-    public LinkHeaderBody(Context context, AttributeSet attrs, int defStyle) {
+    public LinkDetailsBody(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init(context);
         createAndSetTabIntent();
+    }
+
+    public void init(Context context) {
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.widget_link_details, this, true);
+        ButterKnife.bind(this);
     }
 
     private void createAndSetTabIntent() {
@@ -71,7 +93,8 @@ public class LinkHeaderBody extends RelativeLayout {
      *   https://www.reddit.com/r/Android/comments/6bb6g5/dev_new_join_release_remote_settings_chrome/.json
      */
     public void setData(Post model) {
-        this.removeAllViews();
+        this.title.setText(model.title);
+        this.contentContainer.removeAllViews();
         String hint = model.postHint == null? "" : model.postHint;
         View contentView = null;
         switch (hint.toLowerCase()) {
@@ -98,11 +121,11 @@ public class LinkHeaderBody extends RelativeLayout {
                 break;
         }
         if(contentView != null) {
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT);
             contentView.setLayoutParams(lp);
-            this.addView(contentView);
+            this.contentContainer.addView(contentView);
         }
     }
 }

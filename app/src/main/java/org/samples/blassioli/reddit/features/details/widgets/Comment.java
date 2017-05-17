@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 import org.samples.blassioli.reddit.R;
 import org.samples.blassioli.reddit.features.details.model.CommentModel;
+import org.samples.blassioli.reddit.widgets.MarkdownView;
 import org.samples.blassioli.reddit.widgets.reddit.RedditHeadline;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import us.feras.mdv.MarkdownView;
 
 public class Comment extends LinearLayout {
 
