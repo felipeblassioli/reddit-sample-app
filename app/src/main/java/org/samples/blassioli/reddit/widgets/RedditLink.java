@@ -99,8 +99,7 @@ public class RedditLink extends CardView {
         //url.setVisibility(View.GONE);
         contentContainer.setVisibility(View.GONE);
         title.setText(model.title);
-        headline.setAuthor(model.author);
-        headline.setCreatedUtc(model.createdUtc);
+        headline.setData(model);
 
         setThumbnail(model.thumbnail);
 

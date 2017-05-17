@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.samples.blassioli.reddit.R;
+import org.samples.blassioli.reddit.features.posts.model.Post;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,6 +17,8 @@ public class RedditHeadline extends LinearLayout {
     TextView author;
     @BindView(R.id.created_text)
     TextView created;
+    @BindView(R.id.kind_text)
+    TextView kind;
 
     public RedditHeadline(Context context) {
         super(context);
@@ -47,6 +50,27 @@ public class RedditHeadline extends LinearLayout {
     public void setCreatedUtc(Long createdUtc) {
         String formattedCreated = RedditUtils.formattedCreatedTimestamp(createdUtc);
         this.created.setText(formattedCreated);
+    }
+
+    public void setKind(String rawKind) {
+        if(rawKind == null) {
+            this.kind.setText("");
+            return;
+        }
+        String kind = rawKind;
+        switch (rawKind) {
+            case "rich:video":
+                kind = "video";
+                break;
+        }
+        String formattedKind = String.format(" \u2022 %s", kind);
+        this.kind.setText(formattedKind);
+    }
+
+    public void setData(Post model) {
+        this.setAuthor(model.author);
+        this.setCreatedUtc(model.createdUtc);
+        this.setKind(model.postHint);
     }
 
     private final static class RedditUtils {

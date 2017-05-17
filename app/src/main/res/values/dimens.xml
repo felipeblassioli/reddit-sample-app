@@ -11,6 +11,9 @@
     <!-- Custom widgets -->
     <dimen name="post_item_card_title_size">16sp</dimen>
 
+    <!-- widgets.RedditHeadline -->
+    <dimen name="widget_reddit_headline_text_size">12sp</dimen>
+
     <!-- widgets.RedditLink -->
 
     <!-- details.widgets.content.Self -->

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="u/UserName \u2022 "
-        android:textSize="12sp"
+        android:textSize="@dimen/widget_reddit_headline_text_size"
         android:textColor="@color/secondary_text"
         />
 
@@ -19,7 +19,12 @@
         android:id="@+id/created_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:textSize="@dimen/widget_reddit_headline_text_size"
         android:text="6h"/>
 
+    <TextView
+        android:id="@+id/kind_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/widget_reddit_headline_text_size" />
 </LinearLayout>
