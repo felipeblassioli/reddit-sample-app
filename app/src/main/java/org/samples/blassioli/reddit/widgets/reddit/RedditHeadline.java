@@ -1,4 +1,4 @@
-package org.samples.blassioli.reddit.widgets;
+package org.samples.blassioli.reddit.widgets.reddit;
 
 import android.content.Context;
 import android.util.AttributeSet;

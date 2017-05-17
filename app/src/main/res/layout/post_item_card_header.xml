@@ -5,15 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/gap"
-    android:paddingRight="@dimen/gap"
-    android:paddingTop="@dimen/gap"
-    android:paddingBottom="@dimen/halfGap">
-
-    <org.samples.blassioli.reddit.widgets.RedditHeadline
-        android:id="@+id/headline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    android:paddingTop="0dp"
+    android:paddingLeft="@dimen/halfGap"
+    android:paddingRight="@dimen/halfGap"
+    android:paddingBottom="0dp">
 
     <LinearLayout
         android:orientation="horizontal"

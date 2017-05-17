@@ -6,10 +6,14 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.common.base.Optional;
 import com.squareup.picasso.Picasso;
 
 import org.samples.blassioli.reddit.R;
+import org.samples.blassioli.reddit.api.posts.PreviewDataImage;
 import org.samples.blassioli.reddit.features.posts.model.Post;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +59,8 @@ public class Image extends LinearLayout {
     }
 
     private String selectBestImageResolution(Post model) {
-        return model.preview.images.get(0).source.url;
+        // TODO: wish resolutions were reliable
+        return model.getFirstPreviewImageOrNull();
+
     }
 }

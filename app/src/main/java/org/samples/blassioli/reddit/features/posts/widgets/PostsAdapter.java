@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.samples.blassioli.reddit.features.posts.model.Post;
-import org.samples.blassioli.reddit.features.posts.widgets.Link;
+import org.samples.blassioli.reddit.widgets.reddit.BaseLink;
 import org.samples.blassioli.reddit.widgets.RecyclerViewListAdapter;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class PostsAdapter extends RecyclerViewListAdapter<Post> {
 
     @Override
     public RecyclerView.ViewHolder getDataViewHolder(ViewGroup parent) {
-        View v = new Link(parent.getContext(), activity);
+        View v = new LinkItem(parent.getContext(), activity);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         v.setLayoutParams(lp);
         return new ViewHolder(v);
@@ -39,11 +39,11 @@ public class PostsAdapter extends RecyclerViewListAdapter<Post> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public Link link;
+        public LinkItem link;
 
         public ViewHolder(View view) {
             super(view);
-            this.link = (Link) view;
+            this.link = (LinkItem) view;
         }
     }
 }

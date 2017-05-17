@@ -21,7 +21,7 @@ public class PostsFragment extends RecyclerLceFragment<PostListModel, PostsView,
 
     private PostsComponent postsComponent;
 
-    private final String loadSize = "5";
+    private final String loadSize = "7";
 
     public PostsFragment() {
     }

@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.samples.blassioli.reddit.widgets.RedditHeadline
+    <org.samples.blassioli.reddit.widgets.reddit.RedditHeadline
         android:id="@+id/headline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -1,7 +1,6 @@
-package org.samples.blassioli.reddit.widgets;
+package org.samples.blassioli.reddit.features.posts.widgets.content;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -21,41 +20,27 @@ import org.samples.blassioli.reddit.picasso.RoundedTransformation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RedditLink extends CardView {
-    @BindView(R.id.content_container)
-    public ViewGroup contentContainer;
-
+public class Link extends LinearLayout {
     @BindView(R.id.content_layout)
     public ViewGroup contentGroup;
-    @BindView(R.id.headline)
-    public RedditHeadline headline;
     @BindView(R.id.title_text)
     public TextView title;
     @BindView(R.id.img_thumbnail)
     public ImageView thumbnail;
     @BindView(R.id.subtitle_text)
-    public TextView subtitleText;
-    @BindView(R.id.ups)
-    public TextView ups;
-    @BindView(R.id.total_comments)
-    public TextView totalComments;
-    @BindView(R.id.card_view)
-    public CardView cardView;
+    public TextView subtitle;
 
-/*    @BindView(R.id.external_url)
-    public ExternalUrl url;*/
-
-    public RedditLink(Context context) {
+    public Link(Context context) {
         super(context);
         init(context);
     }
 
-    public RedditLink(Context context, AttributeSet attrs) {
+    public Link(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public RedditLink(Context context, AttributeSet attrs, int defStyle) {
+    public Link(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
@@ -63,7 +48,7 @@ public class RedditLink extends CardView {
     public void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.post_item_card, this, true);
+        inflater.inflate(R.layout.post_item_card_header, this, true);
         ButterKnife.bind(this);
     }
 
@@ -96,22 +81,8 @@ public class RedditLink extends CardView {
     }
 
     public void setData(Post model) {
-        //url.setVisibility(View.GONE);
-        contentContainer.setVisibility(View.GONE);
-        title.setText(model.title);
-        headline.setData(model);
-
-        setThumbnail(model.thumbnail);
-
-        subtitleText.setText(getFormatedSubtitleText(model));
-        ups.setText(model.ups);
-        totalComments.setText(model.numComments);
+        this.title.setText(model.title);
+        this.setThumbnail(model.thumbnail);
+        this.subtitle.setVisibility(View.GONE);
     }
-
-    protected String getFormatedSubtitleText(Post p) {
-        // TODO: Estimate the text size on the screen and take first 3 or 4 lines
-        String text = p.selftext;
-        return text.length() >= 256? text.substring(0, 255) : text;
-    }
-
 }

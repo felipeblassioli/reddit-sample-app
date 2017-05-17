@@ -19,17 +19,27 @@
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/halfGap">
 
-            <include layout="@layout/post_item_card_header"
-                android:id="@+id/card_header" />
+            <FrameLayout
+                android:id="@+id/card_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
-            <include layout="@layout/post_item_card_body"
+            <FrameLayout
                 android:id="@+id/card_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/card_header"
+                android:minHeight="50dp"
+                android:layout_marginBottom="@dimen/halfGap"
                 />
 
-            <include layout="@layout/post_item_card_footer" />
+            <FrameLayout
+                android:id="@+id/card_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                />
 
         </RelativeLayout>
 

@@ -9,32 +9,37 @@ import android.view.View;
 import org.samples.blassioli.reddit.R;
 import org.samples.blassioli.reddit.features.details.DetailsActivity;
 import org.samples.blassioli.reddit.features.posts.model.Post;
-import org.samples.blassioli.reddit.widgets.RedditLink;
+import org.samples.blassioli.reddit.widgets.reddit.BaseLink;
 
-public class Link extends RedditLink {
+public class LinkItem extends BaseLink {
 
     private Activity activity;
 
-    public Link(Context context, Activity activity) {
+    public LinkItem(Context context, Activity activity) {
         super(context);
         this.activity = activity;
     }
 
-    public Link(Context context) {
+    public LinkItem(Context context) {
         super(context);
     }
 
-    public Link(Context context, AttributeSet attrs) {
+    public LinkItem(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public Link(Context context, AttributeSet attrs, int defStyle) {
+    public LinkItem(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
     @Override
-    public void setData(Post model) {
-        super.setData(model);
+    protected View createBody(Context context) {
+        return new LinkBody(context);
+    }
+
+    @Override
+    protected void onBodyBind(View view, Post model) {
+        ((LinkBody) view).setData(model);
         this.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

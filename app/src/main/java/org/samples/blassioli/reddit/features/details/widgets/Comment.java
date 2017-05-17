@@ -3,7 +3,6 @@ package org.samples.blassioli.reddit.features.details.widgets;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v4.content.ContextCompat;
-import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 
 import org.samples.blassioli.reddit.R;
 import org.samples.blassioli.reddit.features.details.model.CommentModel;
-import org.samples.blassioli.reddit.widgets.RedditHeadline;
+import org.samples.blassioli.reddit.widgets.reddit.RedditHeadline;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
