@@ -7,7 +7,8 @@ machine:
     VERSION_CODE: ${CIRCLE_BUILD_NUM}
     VERSION_NAME: "1.0.${VERSION_CODE}"
     QEMU_AUDIO_DRV: none
-    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+    _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
     TERM: "dumb"
     ADB_INSTALL_TIMEOUT: "10"
 
@@ -25,7 +26,8 @@ dependencies:
 
 test:
   override:
-    - emulator -avd circleci-android22 -no-window:
+    - ./gradlew assembleRelease -PdisablePreDex
+    - emulator -avd circleci-android22 -no-boot-anim -no-window:
         background: true
         parallel: true
     - circle-android wait-for-boot
@@ -37,7 +39,7 @@ test:
     - adb shell screencap -p | sed 's/\r$//' > bootscreen.png
     - cp bootscreen.png $CIRCLE_ARTIFACTS/bootscreen.png
     - ./imgurbash.sh bootscreen.png
-    - ./gradlew test jacocoTestReport assembleRelease
+    - ./gradlew jacocoTestReport -PdisablePreDex
   post:
      # .apk
      - cp -r ${HOME}/${CIRCLE_PROJECT_REPONAME}/app/build/outputs/apk/ $CIRCLE_ARTIFACTS 
