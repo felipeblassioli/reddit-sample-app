@@ -3,6 +3,7 @@ package org.samples.blassioli.reddit.features.details.widgets;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import org.samples.blassioli.reddit.widgets.RedditHeadline;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import us.feras.mdv.MarkdownView;
 
 public class Comment extends LinearLayout {
 
@@ -35,7 +37,7 @@ public class Comment extends LinearLayout {
     public RedditHeadline headline;
 
     @BindView(R.id.subtitle_text)
-    public TextView body;
+    public MarkdownView body;
 
     @BindView(R.id.ups)
     public TextView ups;
@@ -64,13 +66,13 @@ public class Comment extends LinearLayout {
         if (model.kind.equals("more")) {
             this.headerContainer.setVisibility(View.GONE);
             this.footerContainer.setVisibility(View.GONE);
-            this.body.setText("MORE");
+            this.body.loadMarkdown("MORE");
         } else {
             this.headerContainer.setVisibility(View.VISIBLE);
             this.footerContainer.setVisibility(View.VISIBLE);
             this.headline.setCreatedUtc(model.createdUtc);
             this.headline.setAuthor(model.author);
-            this.body.setText(model.body);
+            this.body.loadMarkdown(model.body, "file:///android_asset/widget_comment.css");
             this.ups.setText("" + model.ups);
         }
         this.setDepth(model.depth + 1);
